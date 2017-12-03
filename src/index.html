@@ -19,7 +19,7 @@ app.controller('reservationsCtrl', function($scope, $http) {
     method : "GET",
     url : "https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Stage/reservations",
     headers : {
-      'x-api-key' : ''
+      'x-api-key' : 'Ai7RemrPPk96XGDz8pdHw1ZUeJZgDXGW18iispp9'
     }
   }).then(function mySuccess(response) {
       $scope.reservations = response.data.Items;
