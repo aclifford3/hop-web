@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="assets/aws-cognito-sdk.min.js"></script>
+<script src="assets/amazon-cognito-identity.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.162.0.min.js"></script>
+<script src="app/login/loginApp.js"></script>
+<script src="app/login/loginController.js"></script>
+
 <body>
 
-<div ng-app="myApp" ng-controller="reservationsCtrl">
+<div ng-app="loginApp" ng-controller="loginController">
 <ul>
   <li ng-repeat="reservation in reservations">
     {{ reservation.lastName + ', ' + reservation.propertyName }}
@@ -12,22 +18,7 @@
 
 <p>The $http service requests a page on the server, and the response is set as the value of the "myWelcome" variable.</p>
 
-<script>
-var app = angular.module('myApp', []);
-app.controller('reservationsCtrl', function($scope, $http) {
-  $http({
-    method : "GET",
-    url : "https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Stage/reservations",
-    headers : {
-      'x-api-key' : 'Ai7RemrPPk96XGDz8pdHw1ZUeJZgDXGW18iispp9'
-    }
-  }).then(function mySuccess(response) {
-      $scope.reservations = response.data.Items;
-    }, function myError(response) {
-      $scope.reservations = response.data;
-  });
-});
-</script>
+
 
 </body>
 </html>
