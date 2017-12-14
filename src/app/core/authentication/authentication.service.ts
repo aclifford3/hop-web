@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
+import * as AWS from "aws-sdk/global";
+// ES Modules, e.g. transpiling with Babel
+import {CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails} from 'amazon-cognito-identity-js';
+import {Credentials} from "aws-sdk/clients/sts";
+import {Credentials, Credentials, Credentials} from "aws-sdk";
+
+
 export interface Credentials {
   // Customize received credentials here
   username: string;
@@ -39,12 +46,64 @@ export class AuthenticationService {
    */
   login(context: LoginContext): Observable<Credentials> {
     // Replace by proper authentication call
+    this.authenticate(context.username, context.password)
     const data = {
       username: context.username,
       token: '123456'
     };
     this.setCredentials(data, context.remember);
     return of(data);
+  }
+
+  authenticate(username: string, password : string){
+
+    var authenticationData = {
+      Username : username,
+      Password : password,
+    };
+    var authenticationDetails = new AuthenticationDetails(authenticationData);
+    var poolData = {
+      UserPoolId : 'us-east-1_ThFdWlCzs', // Your user pool id here
+      ClientId : '2uoh44mquangcqdgu4qhr10316' // Your client id here
+    };
+
+    var userPool = new CognitoUserPool(poolData);
+
+    var userData = {
+      Username : username,
+      Pool : userPool
+    };
+    var cognitoUser = new CognitoUser(userData);
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onSuccess: function (result) {
+        console.log('access token + ' + result.getAccessToken().getJwtToken());
+
+        AWS.config.region = 'us-east-1';
+
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+          IdentityPoolId : 'us-east-1:e3c9312a-b55e-43fd-8356-9b642e1d66dc', // your identity pool id here
+          Logins : {
+            'cognito-idp.us-east-1.amazonaws.com/us-east-1_ThFdWlCzs' : result.getIdToken().getJwtToken()
+          }
+        });
+
+        //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
+        AWS.config.credentials.refresh((error) => {
+          if (error) {
+            console.error(error);
+          } else {
+            // Instantiate aws sdk service objects now that the credentials have been updated.
+            // example: var s3 = new AWS.S3();
+            console.log('Successfully logged!');
+          }
+        });
+      },
+
+      onFailure: function(err) {
+        alert(err);
+      },
+
+    });
   }
 
   /**
