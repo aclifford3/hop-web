@@ -5,9 +5,6 @@ import { of } from 'rxjs/observable/of';
 import * as AWS from "aws-sdk/global";
 // ES Modules, e.g. transpiling with Babel
 import {CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails} from 'amazon-cognito-identity-js';
-import {Credentials} from "aws-sdk/clients/sts";
-import {Credentials, Credentials, Credentials} from "aws-sdk";
-
 
 export interface Credentials {
   // Customize received credentials here
@@ -87,16 +84,16 @@ export class AuthenticationService {
           }
         });
 
-        //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-        AWS.config.credentials.refresh((error) => {
-          if (error) {
-            console.error(error);
-          } else {
-            // Instantiate aws sdk service objects now that the credentials have been updated.
-            // example: var s3 = new AWS.S3();
-            console.log('Successfully logged!');
-          }
-        });
+        // //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
+        // AWS.config.credentials.refresh((error) => {
+        //   if (error) {
+        //     console.error(error);
+        //   } else {
+        //     // Instantiate aws sdk service objects now that the credentials have been updated.
+        //     // example: var s3 = new AWS.S3();
+        //     console.log('Successfully logged!');
+        //   }
+        // });
       },
 
       onFailure: function(err) {
