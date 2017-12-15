@@ -17,6 +17,11 @@ export interface LoginContext {
   remember?: boolean;
 }
 
+export interface NewPasswordUser {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export interface CognitoCallback {
   cognitoCallback(message: string, result: any): void;
 }
@@ -49,10 +54,49 @@ export class AuthenticationService {
     this.authenticate(context.username, context.password, callback);
     const data = {
       username: context.username,
-      token: '123456'
+      token: "12345"
     };
     this.setCredentials(data, context.remember);
     return of(data);
+  }
+
+  newPassword(newPasswordUser: NewPasswordUser, callback: CognitoCallback): void {
+    console.log(newPasswordUser);
+    // Get these details and call
+    //cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+    let authenticationData = {
+      Username: this._credentials.username,
+      Password: newPasswordUser.oldPassword,
+    };
+    let authenticationDetails = new AuthenticationDetails(authenticationData);
+
+    console.log("UserLoginService: Params set...Authenticating the user");
+    let cognitoUser = this.getCognitoUser(this._credentials.username)
+    console.log("UserLoginService: config is " + AWS.config);
+    cognitoUser.authenticateUser(authenticationDetails, {
+      newPasswordRequired: function (userAttributes: any, requiredAttributes: any) {
+        // User was signed up by an admin and must provide new
+        // password and required attributes, if any, to complete
+        // authentication.
+
+        // the api doesn't accept this field back
+        //delete userAttributes.email_verified;
+        cognitoUser.completeNewPasswordChallenge(newPasswordUser.newPassword, requiredAttributes, {
+          onSuccess: function (result) {
+            callback.cognitoCallback(null, userAttributes);
+          },
+          onFailure: function (err) {
+            callback.cognitoCallback(err, null);
+          }
+        });
+      },
+      onSuccess: function (result) {
+        callback.cognitoCallback(null, result);
+      },
+      onFailure: function (err) {
+        callback.cognitoCallback(err, null);
+      }
+    });
   }
 
   authenticate(username: string, password: string, callback: CognitoCallback) {
@@ -62,18 +106,8 @@ export class AuthenticationService {
       Password : password,
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
-    const poolData = {
-      UserPoolId : 'us-east-1_ThFdWlCzs', // Your user pool id here
-      ClientId : '2uoh44mquangcqdgu4qhr10316' // Your client id here
-    };
+    const cognitoUser = this.getCognitoUser(username);
 
-    const userPool = new CognitoUserPool(poolData);
-
-    const userData = {
-      Username : username,
-      Pool : userPool
-    };
-    const cognitoUser = new CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result: CognitoUserSession) {
         console.log('access token + ' + result.getAccessToken().getJwtToken());
@@ -98,16 +132,34 @@ export class AuthenticationService {
         //     console.log('Successfully logged!');
         //   }
         // });
+        callback.cognitoCallback(null, result)
       },
       newPasswordRequired: function (userAttributes, requiredAttributes) {
-        console.log('New password is required.');
+        console.debug('New password is required.');
         callback.cognitoCallback("A new password is required.", null);
       },
       onFailure: function(err: any) {
-        alert(err);
+        //alert(err);
+        callback.cognitoCallback(err.message, null)
       },
 
     });
+  }
+
+  private getCognitoUser(username: string) {
+    const poolData = {
+      UserPoolId: 'us-east-1_ThFdWlCzs', // Your user pool id here
+      ClientId: '2uoh44mquangcqdgu4qhr10316' // Your client id here
+    };
+
+    const userPool = new CognitoUserPool(poolData);
+
+    const userData = {
+      Username: username,
+      Pool: userPool
+    };
+    const cognitoUser = new CognitoUser(userData);
+    return cognitoUser;
   }
 
   /**
