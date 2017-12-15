@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import * as AWS from "aws-sdk/global";
-// ES Modules, e.g. transpiling with Babel
-import {CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails} from 'amazon-cognito-identity-js';
+import * as AWS from 'aws-sdk/global';
+import {CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession} from 'amazon-cognito-identity-js';
 
 export interface Credentials {
   // Customize received credentials here
@@ -43,7 +42,7 @@ export class AuthenticationService {
    */
   login(context: LoginContext): Observable<Credentials> {
     // Replace by proper authentication call
-    this.authenticate(context.username, context.password)
+    this.authenticate(context.username, context.password);
     const data = {
       username: context.username,
       token: '123456'
@@ -52,27 +51,27 @@ export class AuthenticationService {
     return of(data);
   }
 
-  authenticate(username: string, password : string){
+  authenticate(username: string, password: string) {
 
-    var authenticationData = {
+    const authenticationData = {
       Username : username,
       Password : password,
     };
-    var authenticationDetails = new AuthenticationDetails(authenticationData);
-    var poolData = {
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
+    const poolData = {
       UserPoolId : 'us-east-1_ThFdWlCzs', // Your user pool id here
       ClientId : '2uoh44mquangcqdgu4qhr10316' // Your client id here
     };
 
-    var userPool = new CognitoUserPool(poolData);
+    const userPool = new CognitoUserPool(poolData);
 
-    var userData = {
+    const userData = {
       Username : username,
       Pool : userPool
     };
-    var cognitoUser = new CognitoUser(userData);
+    const cognitoUser = new CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: function (result) {
+      onSuccess: function (result: CognitoUserSession) {
         console.log('access token + ' + result.getAccessToken().getJwtToken());
 
         AWS.config.region = 'us-east-1';
@@ -96,7 +95,7 @@ export class AuthenticationService {
         // });
       },
 
-      onFailure: function(err) {
+      onFailure: function(err: any) {
         alert(err);
       },
 
