@@ -17,6 +17,10 @@ export interface LoginContext {
   remember?: boolean;
 }
 
+export interface CognitoCallback {
+  cognitoCallback(message: string, result: any): void;
+}
+
 const credentialsKey = 'credentials';
 
 /**
@@ -40,9 +44,9 @@ export class AuthenticationService {
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  login(context: LoginContext): Observable<Credentials> {
+  login(context: LoginContext, callback: CognitoCallback): Observable<Credentials> {
     // Replace by proper authentication call
-    this.authenticate(context.username, context.password);
+    this.authenticate(context.username, context.password, callback);
     const data = {
       username: context.username,
       token: '123456'
@@ -51,7 +55,7 @@ export class AuthenticationService {
     return of(data);
   }
 
-  authenticate(username: string, password: string) {
+  authenticate(username: string, password: string, callback: CognitoCallback) {
 
     const authenticationData = {
       Username : username,
@@ -83,6 +87,7 @@ export class AuthenticationService {
           }
         });
 
+
         // //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
         // AWS.config.credentials.refresh((error) => {
         //   if (error) {
@@ -94,7 +99,10 @@ export class AuthenticationService {
         //   }
         // });
       },
-
+      newPasswordRequired: function (userAttributes, requiredAttributes) {
+        console.log('New password is required.');
+        callback.cognitoCallback("A new password is required.", null);
+      },
       onFailure: function(err: any) {
         alert(err);
       },

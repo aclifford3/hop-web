@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Logger } from '../core/logger.service';
 import { I18nService } from '../core/i18n.service';
-import { AuthenticationService } from '../core/authentication/authentication.service';
+import {AuthenticationService, CognitoCallback} from '../core/authentication/authentication.service';
 
 const log = new Logger('Login');
 
@@ -16,7 +16,7 @@ const log = new Logger('Login');
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, CognitoCallback {
 
   version: string = environment.version;
   error: string;
@@ -35,19 +35,19 @@ export class LoginComponent implements OnInit {
 
   login() {
     const loading = this.loadingController.create();
-    loading.present();
-    this.authenticationService.login(this.loginForm.value)
-      .pipe(finalize(() => {
-        this.loginForm.markAsPristine();
-        loading.dismiss();
-      }))
-      .subscribe(credentials => {
-        log.debug(`${credentials.username} successfully logged in`);
-        this.router.navigate(['/'], { replaceUrl: true });
-      }, error => {
-        log.debug(`Login error: ${error}`);
-        this.error = error;
-      });
+    //loading.present();
+    this.authenticationService.login(this.loginForm.value, this)
+      // .pipe(finalize(() => {
+      //    this.loginForm.markAsPristine();
+      //    loading.dismiss();
+      // }));
+      // .subscribe(credentials => {
+      //   log.debug(`${credentials.username} successfully logged in`);
+      //   this.router.navigate(['/'], { replaceUrl: true });
+      // }, error => {
+      //   log.debug(`Login error: ${error}`);
+      //   this.error = error;
+      // });
   }
 
   setLanguage(language: string) {
@@ -72,6 +72,24 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
       remember: true
     });
+  }
+
+  cognitoCallback(message: string, result: any) {
+    if (message != null) { //error
+      this.error = message;
+      console.log("error: " + this.error);
+      // if (this.error === 'User is not confirmed.') {
+      //   console.log("redirecting");
+      //   this.router.navigate(['/home/confirmRegistration', this.email]);
+      // }
+      if (this.error === 'A new password is required.') {
+        console.log("redirecting to set new password");
+        this.router.navigate(['/reset-password']);
+      }
+    } else { //success
+      console.log('Successfully logged in.')
+      this.router.navigate(['/'], { replaceUrl: true });
+    }
   }
 
 }

@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
+import {ResetPasswordModule} from "./reset-password/reset-password.module";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { LoginModule } from './login/login.module';
     HomeModule,
     AboutModule,
     LoginModule,
+    ResetPasswordModule,
     AppRoutingModule
   ],
   declarations: [AppComponent],
