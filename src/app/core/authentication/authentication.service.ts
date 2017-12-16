@@ -158,8 +158,7 @@ export class AuthenticationService {
       Username: username,
       Pool: userPool
     };
-    const cognitoUser = new CognitoUser(userData);
-    return cognitoUser;
+    return new CognitoUser(userData);
   }
 
   /**

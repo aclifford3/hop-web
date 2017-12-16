@@ -15,6 +15,7 @@ import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {ReservationsAllModule} from "./reservations-all/reservations-all.module";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import {ReservationsAllModule} from "./reservations-all/reservations-all.module"
     LoginModule,
     ResetPasswordModule,
     ReservationsAllModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   declarations: [AppComponent],
   providers: [

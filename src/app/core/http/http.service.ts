@@ -37,13 +37,13 @@ export class HttpService extends Http {
     const requestOptions = options || {};
     let url: string;
 
-    if (typeof request === 'string') {
-      url = request;
-      request = environment.serverUrl + url;
-    } else {
-      url = request.url;
-      request.url = environment.serverUrl + url;
-    }
+    // if (typeof request === 'string') {
+    //   url = request;
+    //   request = environment.serverUrl + url;
+    // } else {
+    //   url = request.url;
+    //   request.url = environment.serverUrl + url;
+    // }
 
     if (!requestOptions.cache) {
       // Do not use cache
