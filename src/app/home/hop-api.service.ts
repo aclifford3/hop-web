@@ -5,6 +5,9 @@ const url = 'https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Dev/reservat
 
 export interface Reservation {
   propertyName: string
+  checkInDate: string
+  checkOutDate: string
+  reservationSource: string
 }
 
 export interface GetReservationsResponse {

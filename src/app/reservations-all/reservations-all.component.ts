@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {GetReservationsResponse, HopApiService, Reservation} from "./hop-api.service";
+import {GetReservationsResponse, HopApiService, Reservation} from "../home/hop-api.service";
 import {finalize} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 

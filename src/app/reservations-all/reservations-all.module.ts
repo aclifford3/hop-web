@@ -6,7 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "ionic-angular";
 import {ReservationsAllRoutingModule} from "./reservations-all-routing.module";
 import {SharedModule} from "../shared/shared.module";
-import {HopApiService} from "./hop-api.service";
+import {HopApiService} from "../home/hop-api.service";
 
 @NgModule({
   imports: [

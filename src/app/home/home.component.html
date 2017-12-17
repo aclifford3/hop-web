@@ -7,17 +7,37 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Property</ion-label>
+      <ion-select [(ngModel)]="propertyNameFilter">
+        <ion-option value="Aruban Jewel">Aruban Jewel</ion-option>
+        <ion-option value="Blue Breeze">Blue Breeze</ion-option>
+        <ion-option value="Casa Tran">Casa Tranquila</ion-option>
+        <ion-option value="Confederate">Confederate</ion-option>
+        <ion-option value="Dushi Iguana">Dushi Iquana</ion-option>
+        <ion-option value="Dushi Tortuga">Dushi Tortuga</ion-option>
+        <ion-option value="Palm Beach">Palm BEACH</ion-option>
+        <ion-option value="Turnberry">Turnberry</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
   <ion-list>
-  <ion-item>
-    <ion-label>Gaming</ion-label>
-    <ion-select [(ngModel)]="gaming">
-      <ion-option value="nes">NES</ion-option>
-      <ion-option value="n64">Nintendo64</ion-option>
-      <ion-option value="ps">PlayStation</ion-option>
-      <ion-option value="genesis">Sega Genesis</ion-option>
-      <ion-option value="saturn">Sega Saturn</ion-option>
-      <ion-option value="snes">SNES</ion-option>
-    </ion-select>
-  </ion-item>
-</ion-list>
+    <ion-item *ngFor="let reservation of reservations">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-4>
+            <h2>{{reservation.propertyName}}</h2>
+          </ion-col>
+          <ion-col col-4>
+            <h3>{{reservation.checkInDate | date: "MMM dd"}} - {{reservation.checkOutDate | date: "MMM dd"}}</h3>
+          </ion-col>
+          <ion-col col-4>
+            <h3>{{reservation.reservationSource}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
