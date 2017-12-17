@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import { QuoteService } from './quote.service';
 import {GetReservationsResponse, HopApiService, Reservation} from "./hop-api.service";
 import {environment} from "../../environments/environment";
 
@@ -13,7 +12,6 @@ import {environment} from "../../environments/environment";
 export class HomeComponent implements OnInit {
 
   isLoading: boolean;
-  gaming: string;
 
   // ngOnInit() {
   //   this.isLoading = true;
