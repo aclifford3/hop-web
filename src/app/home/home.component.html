@@ -24,24 +24,23 @@
     <ion-item *ngFor="let reservation of reservations">
       <ion-grid>
         <ion-row>
-          <ion-col col-4>
+          <ion-col>
             <h2>{{reservation.propertyName}}</h2>
           </ion-col>
-          <ion-col col-6>
+          <ion-col>
             <h2>{{reservation.checkInDate | date: "MMM dd"}} - {{reservation.checkOutDate | date: "MMM dd"}}</h2>
           </ion-col>
-          <ion-col col-2>
-              <span *ngIf = "reservation.reservationSource == 'Homeaway';"><img src="assets/home-away.png"></span>
-              <span *ngIf = "reservation.reservationSource == 'Airbnb';"><img src="assets/air-bnb.png"></span>
-              <span *ngIf = "reservation.reservationSource == 'MyVR';"><img src="assets/my-vr.png"></span>
-              <!--<img src="assets/air-bnb.png">-->
-              <!--<h3>{{reservation.reservationSource}}</h3>-->
-              <!--<img src="assets/air-bnb.png">-->
-            <!--<h3>{{reservation.reservationSource}}</h3>-->
-          </ion-col>
+          <!--<ion-col col-2>-->
+              <!--<span *ngIf = "reservation.reservationSource == 'Homeaway';"><img src="assets/home-away.png"></span>-->
+              <!--<span *ngIf = "reservation.reservationSource == 'MyVR';"><img src="assets/my-vr.png"></span>-->
+              <!--&lt;!&ndash;<img src="assets/air-bnb.png">&ndash;&gt;-->
+              <!--&lt;!&ndash;<h3>{{reservation.reservationSource}}</h3>&ndash;&gt;-->
+              <!--&lt;!&ndash;<img src="assets/air-bnb.png">&ndash;&gt;-->
+            <!--&lt;!&ndash;<h3>{{reservation.reservationSource}}</h3>&ndash;&gt;-->
+          <!--</ion-col>-->
         </ion-row>
         <ion-row>
-          <ion-col col-4>
+          <ion-col col-6>
             <p>{{reservation.lastName}} · {{reservation.guestsNum}}
               <span *ngIf = "reservation.apartment;">
                 ·
@@ -49,16 +48,21 @@
               </span>
             </p>
           </ion-col>
-          <ion-col col-6>
+          <ion-col col-6="">
             <p>{{reservation.meetTime}}</p>
           </ion-col>
-          <ion-col col-2>
+          <ion-col>
             <!--<div ng-if="reservation.apartment == true">-->
             <!--</div>-->
             <!--<h3>Apt: {{reservation.apartment}}</h3>-->
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-thumbnail item-end>
+        <img *ngIf = "reservation.reservationSource == 'Airbnb';" src="assets/air-bnb.png">
+        <img *ngIf = "reservation.reservationSource == 'MyVR';" src="assets/my-vr-logo.gif">
+        <img *ngIf = "reservation.reservationSource == 'Homeaway';" src="assets/home-away-logo.png">
+      </ion-thumbnail>
     </ion-item>
   </ion-list>
 </ion-content>
