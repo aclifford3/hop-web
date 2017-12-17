@@ -8,6 +8,10 @@ export interface Reservation {
   checkInDate: string
   checkOutDate: string
   reservationSource: string
+  meetTime: string,
+  guestsNum: number,
+  apartment: boolean,
+  lastName: string
 }
 
 export interface GetReservationsResponse {

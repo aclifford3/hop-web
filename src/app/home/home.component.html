@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title><span translate>Reservations</span></ion-title>
+    <!--<ion-title><span translate>Reservations</span></ion-title>-->
       <ion-item>
         <ion-label>Property</ion-label>
         <ion-select [(ngModel)]="propertyNameFilter">
@@ -25,13 +25,27 @@
       <ion-grid>
         <ion-row>
           <ion-col col-4>
-            <h2>{{reservation.propertyName}}</h2>
+            <h3>{{reservation.propertyName}}</h3>
           </ion-col>
           <ion-col col-4>
             <h3>{{reservation.checkInDate | date: "MMM dd"}} - {{reservation.checkOutDate | date: "MMM dd"}}</h3>
           </ion-col>
           <ion-col col-4>
             <h3>{{reservation.reservationSource}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4>
+            <h3>{{reservation.lastName}} - {{reservation.guestsNum}}</h3>
+          </ion-col>
+          <ion-col col-4>
+            <h3>{{reservation.meetTime}}</h3>
+          </ion-col>
+          <ion-col col-4>
+            <ion-icon name="home"></ion-icon>
+            <!--<div ng-if="reservation.apartment == true">-->
+            <!--</div>-->
+            <!--<h3>Apt: {{reservation.apartment}}</h3>-->
           </ion-col>
         </ion-row>
       </ion-grid>
