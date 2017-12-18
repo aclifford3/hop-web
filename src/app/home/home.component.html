@@ -40,16 +40,21 @@
           <!--</ion-col>-->
         </ion-row>
         <ion-row>
-          <ion-col col-6>
+          <ion-col col-12>
             <p>{{reservation.lastName}} · {{reservation.guestsNum}}
               <span *ngIf = "reservation.apartment;">
                 ·
                 <ion-icon name="home"></ion-icon>
               </span>
+              <span *ngIf = "reservation.flightArrivalTime.length>1;">
+                ·
+                <ion-icon name="plane"></ion-icon>
+              </span>
+              <span *ngIf = "reservation.instructionsSent;">
+                ·
+              <ion-icon name="paper"></ion-icon>
+              </span>
             </p>
-          </ion-col>
-          <ion-col col-6="">
-            <p>{{reservation.meetTime}}</p>
           </ion-col>
           <ion-col>
             <!--<div ng-if="reservation.apartment == true">-->
