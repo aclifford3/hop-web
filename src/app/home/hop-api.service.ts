@@ -44,7 +44,7 @@ export class HopApiService {
   }
 
   addReservation(reservation: Reservation) {
-    return this.httpClient.post<Response>(url, {headers: headers })
+    return this.httpClient.post<Response>(url, reservation, {headers: headers })
   }
 
   deleteReservation(reservation: Reservation) {

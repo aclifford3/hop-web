@@ -15,6 +15,7 @@ import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {HttpClientModule} from "@angular/common/http";
+import {AddReservationModule} from "./add-reservation/add-reservation.module";
 
 @NgModule({
   imports: [
@@ -29,12 +30,12 @@ import {HttpClientModule} from "@angular/common/http";
     AboutModule,
     LoginModule,
     ResetPasswordModule,
+    AddReservationModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   declarations: [AppComponent],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [IonicApp]
 })
 export class AppModule { }

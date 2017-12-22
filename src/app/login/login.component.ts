@@ -91,5 +91,5 @@ export class LoginComponent implements OnInit, CognitoCallback {
       this.router.navigate(['/'], { replaceUrl: true });
     }
   }
-
 }
+

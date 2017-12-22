@@ -12,6 +12,7 @@ import {environment} from "../../environments/environment";
 export class HomeComponent implements OnInit {
 
   isLoading: boolean;
+  shouldHide: boolean;
 
   // ngOnInit() {
   //   this.isLoading = true;
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
   version: string = environment.version;
 
   ngOnInit() {
+    this.shouldHide = true;
     this.isLoading = true;
     this.hopApiService.getReservations()
       .pipe(finalize(() => { this.isLoading = false; }))
