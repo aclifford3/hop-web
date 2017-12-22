@@ -3,6 +3,7 @@ import { finalize } from 'rxjs/operators';
 
 import {GetReservationsResponse, HopApiService, Reservation} from "./hop-api.service";
 import {environment} from "../../environments/environment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
   //     .subscribe((quote: string) => { this.quote = quote; });
   // }
 
-  constructor(private hopApiService: HopApiService) { }
+  constructor(private hopApiService: HopApiService,
+              private router: Router) { }
 
   reservations: Reservation[];
   propertyNameFilter: string
@@ -35,6 +37,10 @@ export class HomeComponent implements OnInit {
       .subscribe((reservations: GetReservationsResponse) => {
         this.reservations = reservations.Items;
       });
+  }
+
+  navToAddReservation() {
+    this.router.navigate(["/add-reservation"])
   }
 
 }
