@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title><span translate>Add Reservation</span></ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-item>
+      <ion-label color="primary">Property</ion-label>
+      <ion-select [(ngModel)]="reservation.propertyName">
+        <ion-option value="Aruban Jewel">Aruban Jewel</ion-option>
+        <ion-option value="Blue Breeze">Blue Breeze</ion-option>
+        <ion-option value="Casa Tran">Casa Tranquila</ion-option>
+        <ion-option value="Confederate">Confederate</ion-option>
+        <ion-option value="Dushi Iguana">Dushi Iquana</ion-option>
+        <ion-option value="Dushi Tortuga">Dushi Tortuga</ion-option>
+        <ion-option value="Palm Beach">Palm Beach</ion-option>
+        <ion-option value="Turnberry">Turnberry</ion-option>
+        <ion-option value="Alec's House">Alec's House</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary">Reservation Source</ion-label>
+      <ion-select [(ngModel)]="reservation.reservationSource">
+        <ion-option value="Homeaway">HomeAway</ion-option>
+        <ion-option value="MyVR">MyVR</ion-option>
+        <ion-option value="AirBnB">AirBnB</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary">Check-in</ion-label>
+      <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="reservation.checkInDate"></ion-datetime>
+    </ion-item>
+  <ion-item>
+    <ion-label color="primary">Check-out</ion-label>
+    <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="reservation.checkOutDate"></ion-datetime>
+  </ion-item>
+
+  <ion-item-divider color="light">Guest Personal Information</ion-item-divider>
+  <ion-item>
+    <ion-label color="primary">First Name</ion-label>
+    <ion-input text-right [(ngModel)]="reservation.firstName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Last Name</ion-label>
+    <ion-input text-right [(ngModel)]="reservation.lastName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Email</ion-label>
+    <ion-input type="email" text-right [(ngModel)]="reservation.email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Phone Number</ion-label>
+    <ion-input type="tel" text-right [(ngModel)]="reservation.phoneNum"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary"># Guests</ion-label>
+    <ion-input type="number" text-right [(ngModel)]="reservation.guestsNum"></ion-input>
+  </ion-item>
+
+  <ion-item-divider color="light">Flight Information</ion-item-divider>
+  <ion-item>
+    <ion-label color="primary">Carrier</ion-label>
+    <ion-input text-right [(ngModel)]="reservation.carrier"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Flight Number</ion-label>
+    <ion-input text-right [(ngModel)]="reservation.flightNum"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Flight Origin City</ion-label>
+    <ion-input text-right [(ngModel)]="reservation.flightOrigCity"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Flight Arrival Time</ion-label>
+    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="reservation.checkOutDate"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Meet Time</ion-label>
+    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="reservation.meetTime"></ion-datetime>
+  </ion-item>
+
+  <ion-item-divider color="light">Additional Information</ion-item-divider>
+  <ion-item>
+    <ion-label color="primary">Apartment</ion-label>
+    <ion-checkbox item-end [(ngModel)]="reservation.apartment"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Damage Deposit Returned</ion-label>
+    <ion-checkbox item-end [(ngModel)]="reservation.ddReturned"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary">Instructions Sent</ion-label>
+    <ion-checkbox item-end [(ngModel)]="reservation.instructionsSent"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" stacked>Notes</ion-label>
+    <ion-textarea placeholder="Make notes here..."></ion-textarea>
+  </ion-item>
+  <button ion-button full (click)="addReservation()">Add</button>
+</ion-content>
+
