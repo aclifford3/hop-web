@@ -26,7 +26,7 @@ export class AddReservationComponent implements OnInit {
     "checkOutDate": "2018-02-24",
     "ddReturned": false,
     "email": "alec.clifford@gmail.com",
-    "firstName": "Alec",
+    "firstName": "",
     "flightArrivalTime": " ",
     "flightNum": " ",
     "flightOrigCity": " ",
