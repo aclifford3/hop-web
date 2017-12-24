@@ -16,6 +16,7 @@ import { LoginModule } from './login/login.module';
 import {ResetPasswordModule} from "./reset-password/reset-password.module";
 import {HttpClientModule} from "@angular/common/http";
 import {AddReservationModule} from "./add-reservation/add-reservation.module";
+import {EditReservationModule} from './edit-reservation/edit-reservation.module';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {AddReservationModule} from "./add-reservation/add-reservation.module";
     LoginModule,
     ResetPasswordModule,
     AddReservationModule,
+    EditReservationModule,
     AppRoutingModule,
     HttpClientModule,
   ],
