@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {GetReservationResponse, HopApiService, Reservation, Response} from '../home/hop-api.service';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {NavParams} from 'ionic-angular';
+import {AlertController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'app-add-reservation',
@@ -14,16 +14,17 @@ export class AddReservationComponent implements OnInit {
 
 
   isLoading: boolean;
-  propertyName: string
-  checkInDate: string
+  propertyName: string;
+  checkInDate: string;
 
   constructor(private hopApiService: HopApiService,
               private router: Router,
-              private navParams: NavParams) { }
+              private navParams: NavParams,
+              private alertCtrl: AlertController) { }
 
   response: Response;
   version: string = environment.version;
-  title = 'Add Reservation';
+  title = 'Put Reservation';
   reservation: Reservation = {
     'apartment': false,
     'carrier': ' ',
@@ -46,14 +47,13 @@ export class AddReservationComponent implements OnInit {
   };
 
   ngOnInit() {
-    console.log(this.navParams);
     this.propertyName = this.navParams.get('propertyName');
     this.checkInDate = this.navParams.get('checkInDate');
     this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
       .pipe(finalize( () => { this.isLoading = false; }))
       .subscribe((getReservationResponse: GetReservationResponse) => {
         this.reservation = getReservationResponse.Item;
-      },
+        },
         error => {
         console.log(error);
         });
@@ -65,8 +65,21 @@ export class AddReservationComponent implements OnInit {
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((response: Response) => {
         this.response = response;
+        const alert = this.alertCtrl.create({
+          title: 'Update Successful',
+          subTitle: 'Successfully updated reservation for ' + this.propertyName + ' on ' + this.checkInDate,
+          buttons: ['OK']
+        });
+        alert.present();
         this.router.navigate(['home']);
       }, error => {
+        const alert = this.alertCtrl.create({
+          title: 'Oops!',
+          subTitle: 'Something went wrong updating your reservation for ' + this.propertyName + ' on '
+          + this.checkInDate,
+          buttons: ['OK']
+        });
+        alert.present();
           console.log(error);
         });
   }
