@@ -56,8 +56,8 @@ export class HopApiService {
     return this.httpClient.post<Response>(url, reservation, {headers: headers });
   }
 
-  deleteReservation(reservation: Reservation) {
-    return this.httpClient.delete<Response>(url, {headers: headers });
+  deleteReservation(propertyName: string, checkInDate: string) {
+    return this.httpClient.delete<Response>(url + '/' + propertyName + '/' + checkInDate, {headers: headers }  );
   }
 
   //

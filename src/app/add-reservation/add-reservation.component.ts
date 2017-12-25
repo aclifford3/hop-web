@@ -27,36 +27,40 @@ export class AddReservationComponent implements OnInit {
   title = 'Edit Reservation';
   reservation: Reservation = {
     'apartment': false,
-    'carrier': ' ',
-    'checkInDate': '2018-02-15',
-    'checkOutDate': '2018-02-24',
-    'ddReturned': false,
-    'email': 'alec.clifford@gmail.com',
-    'firstName': '',
-    'flightArrivalTime': ' ',
-    'flightNum': ' ',
-    'flightOrigCity': ' ',
-    'guestsNum': 2,
-    'instructionsSent': false,
-    'lastName': 'Clifford',
-    'meetTime': ' ',
-    'notes': ' ',
-    'phoneNum': '(404) 906-0924',
-    'propertyName': 'Alec\'s House',
-    'reservationSource': 'Homeaway'
+    'carrier': null,
+    'checkInDate': null,
+    'checkOutDate': null,
+    'ddReturned': null,
+    'email': null,
+    'firstName': null,
+    'flightArrivalTime': null,
+    'flightNum': null,
+    'flightOrigCity': null,
+    'guestsNum': null,
+    'instructionsSent': null,
+    'lastName': null,
+    'meetTime': null,
+    'notes': null,
+    'phoneNum': null,
+    'propertyName': null,
+    'reservationSource': null
   };
 
   ngOnInit() {
     this.propertyName = this.navParams.get('propertyName');
-    this.checkInDate = this.navParams.get('checkInDate');
-    this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
-      .pipe(finalize( () => { this.isLoading = false; }))
-      .subscribe((getReservationResponse: GetReservationResponse) => {
-        this.reservation = getReservationResponse.Item;
-        },
-        error => {
-        console.log(error);
-        });
+    if (this.propertyName != null) {
+      this.checkInDate = this.navParams.get('checkInDate');
+      this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
+        .pipe(finalize( () => { this.isLoading = false; }))
+        .subscribe((getReservationResponse: GetReservationResponse) => {
+            this.reservation = getReservationResponse.Item;
+          },
+          error => {
+            console.log(error);
+          });
+    } else {
+      console.log('Adding new reservation.');
+    }
   }
 
   addReservation() {

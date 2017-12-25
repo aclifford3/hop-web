@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import {GetReservationsResponse, HopApiService, Reservation} from './hop-api.service';
+import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
-import {NavController} from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 
 @Component({
@@ -26,7 +26,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private hopApiService: HopApiService,
               private router: Router,
-              private navCtrl: NavController) { }
+              private navCtrl: NavController,
+              private alertCtrl: AlertController) { }
 
   reservations: Reservation[];
   propertyNameFilter: string;
@@ -42,12 +43,36 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  navToAddReservation() {
-    this.router.navigate(['/add-reservation']);
-  }
-
   edit(reservation: Reservation) {
     this.navCtrl
       .push(AddReservationComponent, {propertyName: reservation.propertyName, checkInDate: reservation.checkInDate});
+  }
+
+  delete(reservation: Reservation) {
+    this.isLoading = true;
+    this.hopApiService.deleteReservation(reservation.propertyName, reservation.checkInDate)
+      .pipe(finalize(() => { this.isLoading = false; }))
+      .subscribe((response: Response) => {
+        const alert = this.alertCtrl.create({
+          title: 'Delete Successful',
+          subTitle: 'Successfully deleted reservation for '
+          + reservation.propertyName + ' on ' + reservation.checkInDate,
+          buttons: ['OK']
+        });
+        alert.present();
+        this.reservations = this.reservations.filter(function(element: Reservation) {
+          return !(element.checkInDate === reservation.checkInDate &&
+            element.propertyName === reservation.propertyName);
+        });
+      }, error => {
+        const alert = this.alertCtrl.create({
+          title: 'Oops!',
+          subTitle: 'Something went wrong deleting your reservation for ' + reservation.propertyName + ' on '
+          + reservation.checkInDate,
+          buttons: ['OK']
+        });
+        alert.present();
+        console.log(error);
+      });
   }
 }
