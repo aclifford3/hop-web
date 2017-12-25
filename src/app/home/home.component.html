@@ -2,29 +2,28 @@
   <ion-navbar color="primary">
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-col col-2>
           <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
           </button>
         </ion-col>
-        <ion-col>
+        <ion-col col-8>
           <ion-item>
-            <ion-label>Property</ion-label>
-            <ion-select [(ngModel)]="propertyNameFilter">
-              <ion-option value="Aruban Jewel">Aruban Jewel</ion-option>
-              <ion-option value="Blue Breeze">Blue Breeze</ion-option>
-              <ion-option value="Casa Tran">Casa Tranquila</ion-option>
-              <ion-option value="Confederate">Confederate</ion-option>
-              <ion-option value="Dushi Iguana">Dushi Iquana</ion-option>
-              <ion-option value="Dushi Tortuga">Dushi Tortuga</ion-option>
-              <ion-option value="Palm Beach">Palm Beach</ion-option>
-              <ion-option value="Turnberry">Turnberry</ion-option>
+            <ion-select [(ngModel)]="propertyName" placeholder="All">
+              <ion-option >Aruban Jewel</ion-option>
+              <ion-option >Blue Breeze</ion-option>
+              <ion-option >Casa Tranquila</ion-option>
+              <ion-option >Confederate</ion-option>
+              <ion-option >Dushi Iquana</ion-option>
+              <ion-option >Dushi Tortuga</ion-option>
+              <ion-option >Palm Beach</ion-option>
+              <ion-option >Turnberry</ion-option>
             </ion-select>
           </ion-item>
         </ion-col>
-        <ion-col>
+        <ion-col col-2>
           <button ion-button>
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="add-circle" (click)='add-reservaton($event)'></ion-icon>
           </button>
         </ion-col>
       </ion-row>
@@ -33,20 +32,20 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let reservation of reservations">
-      <ion-item>
+    <ion-item-sliding *ngFor="let reservation of reservations" >
+      <ion-item detail-push (click)="edit(reservation)">
         <ion-grid>
           <ion-row>
-            <ion-col>
+            <ion-col col-6>
               <h2>{{reservation.propertyName}}</h2>
             </ion-col>
             <ion-col>
-              <h2>{{reservation.checkInDate | date: "MMM dd"}} - {{reservation.checkOutDate | date: "MMM dd"}}</h2>
+              <h3>{{reservation.checkInDate | date: "MMM dd"}}-{{reservation.checkOutDate | date: "MMM dd"}}</h3>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col col-12>
-              <p>{{reservation.lastName}} · {{reservation.guestsNum}}
+              {{reservation.lastName}} · {{reservation.guestsNum}}
                 <span *ngIf = "reservation.apartment;">
                   ·
                   <ion-icon name="home"></ion-icon>
@@ -59,7 +58,6 @@
                   ·
                 <ion-icon name="paper"></ion-icon>
                 </span>
-              </p>
             </ion-col>
             <ion-col>
             </ion-col>
@@ -69,20 +67,23 @@
           <img *ngIf = "reservation.reservationSource == 'Airbnb';" src="assets/air-bnb.png">
           <img *ngIf = "reservation.reservationSource == 'MyVR';" src="assets/my-vr-logo.gif">
           <img *ngIf = "reservation.reservationSource == 'Homeaway';" src="assets/home-away-logo.png">
+          <img *ngIf = "reservation.reservationSource == 'Flipkey';" src="assets/home-away-logo.png">
         </ion-thumbnail>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="light" (click)="edit(reservation)">Edit</button>
+        <button ion-button color="light" (click)="edit(reservation)">
+          <ion-icon name="clipboard"></ion-icon> edit
+        </button>
         <button ion-button color="danger" (click)="delete(reservation)">
-          <ion-icon name="remove-circle"></ion-icon>
+          <ion-icon name="trash"></ion-icon> delete
         </button>
       </ion-item-options>
       <ion-item-options side="left">
         <button ion-button color="dark">
-          <ion-icon name="text"></ion-icon>
+          <ion-icon name="text"></ion-icon> text
         </button>
         <button ion-button color="secondary">
-          <ion-icon name="call"></ion-icon>
+          <ion-icon name="call"></ion-icon> call
         </button>
       </ion-item-options>
     </ion-item-sliding>
