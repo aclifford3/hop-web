@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import {GetReservationsResponse, HopApiService, Reservation} from "./hop-api.service";
-import {environment} from "../../environments/environment";
-import {Router} from "@angular/router";
+import {GetReservationsResponse, HopApiService, Reservation} from './hop-api.service';
+import {environment} from '../../environments/environment';
+import {Router} from '@angular/router';
+import {NavController} from 'ionic-angular';
+import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 
 @Component({
   selector: 'app-home',
@@ -23,10 +25,11 @@ export class HomeComponent implements OnInit {
   // }
 
   constructor(private hopApiService: HopApiService,
-              private router: Router) { }
+              private router: Router,
+              private navCtrl: NavController) { }
 
   reservations: Reservation[];
-  propertyNameFilter: string
+  propertyNameFilter: string;
   version: string = environment.version;
 
   ngOnInit() {
@@ -40,7 +43,11 @@ export class HomeComponent implements OnInit {
   }
 
   navToAddReservation() {
-    this.router.navigate(["/add-reservation"])
+    this.router.navigate(['/add-reservation']);
   }
 
+  edit(reservation: Reservation) {
+    this.navCtrl
+      .push(AddReservationComponent, {propertyName: reservation.propertyName, checkInDate: reservation.checkInDate});
+  }
 }

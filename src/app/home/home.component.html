@@ -51,7 +51,7 @@
                   ·
                   <ion-icon name="home"></ion-icon>
                 </span>
-                <span *ngIf = "reservation.flightArrivalTime.length>1;">
+                <span *ngIf = "reservation.flightArrivalTime?.length>1;">
                   ·
                   <ion-icon name="plane"></ion-icon>
                 </span>
@@ -72,7 +72,7 @@
         </ion-thumbnail>
       </ion-item>
       <ion-item-options side="right">
-        <button ion-button color="light">Edit</button>
+        <button ion-button color="light" (click)="edit(reservation)">Edit</button>
         <button ion-button color="danger">
           <ion-icon name="remove-circle"></ion-icon>
         </button>
