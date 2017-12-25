@@ -13,10 +13,9 @@ import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './about/about.module';
 import { LoginModule } from './login/login.module';
-import {ResetPasswordModule} from "./reset-password/reset-password.module";
-import {HttpClientModule} from "@angular/common/http";
-import {AddReservationModule} from "./add-reservation/add-reservation.module";
-import {EditReservationModule} from './edit-reservation/edit-reservation.module';
+import {ResetPasswordModule} from './reset-password/reset-password.module';
+import {HttpClientModule} from '@angular/common/http';
+import {AddReservationModule} from './add-reservation/add-reservation.module';
 
 @NgModule({
   imports: [
@@ -32,7 +31,6 @@ import {EditReservationModule} from './edit-reservation/edit-reservation.module'
     LoginModule,
     ResetPasswordModule,
     AddReservationModule,
-    EditReservationModule,
     AppRoutingModule,
     HttpClientModule,
   ],

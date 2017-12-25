@@ -15,6 +15,9 @@ import {SharedModule} from '../shared/shared.module';
     SharedModule,
     AddReservationRoutingModule
   ],
+  exports: [
+    AddReservationComponent
+  ],
   entryComponents: [
     AddReservationComponent
   ],

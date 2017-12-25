@@ -3,11 +3,10 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title><span translate>Add Reservation</span></ion-title>
+    <ion-title><span translate>{{title}}</span></ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-
   <ion-item>
       <ion-label color="primary">Property</ion-label>
       <ion-select [(ngModel)]="reservation.propertyName">
@@ -100,6 +99,6 @@
     <ion-label color="primary" stacked>Notes</ion-label>
     <ion-textarea placeholder="Make notes here..."></ion-textarea>
   </ion-item>
-  <button ion-button full (click)="addReservation()">Add</button>
+  <button ion-button full (click)="addReservation()">Confirm</button>
 </ion-content>
 
