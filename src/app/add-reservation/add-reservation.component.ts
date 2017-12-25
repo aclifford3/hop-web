@@ -71,7 +71,6 @@ export class AddReservationComponent implements OnInit {
           buttons: ['OK']
         });
         alert.present();
-        this.router.navigate(['home']);
       }, error => {
         const alert = this.alertCtrl.create({
           title: 'Oops!',
