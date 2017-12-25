@@ -24,7 +24,7 @@ export class AddReservationComponent implements OnInit {
 
   response: Response;
   version: string = environment.version;
-  title = 'Put Reservation';
+  title = 'Edit Reservation';
   reservation: Reservation = {
     'apartment': false,
     'carrier': ' ',
