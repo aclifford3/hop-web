@@ -9,7 +9,7 @@
         </ion-col>
         <ion-col col-8>
           <ion-item>
-            <ion-select [(ngModel)]="propertyNameFilter" placeholder="All">
+              <ion-select [(ngModel)]="propertyNameFilter" placeholder="All">
               <ion-option >Aruban Jewel</ion-option>
               <ion-option >Blue Breeze</ion-option>
               <ion-option >Casa Tranquila</ion-option>
@@ -18,7 +18,7 @@
               <ion-option >Dushi Tortuga</ion-option>
               <ion-option >Palm Beach</ion-option>
               <ion-option >Turnberry</ion-option>
-            </ion-select>
+            </ion-select>   
           </ion-item>
         </ion-col>
         <ion-col col-2>
@@ -37,10 +37,7 @@
         <ion-grid>
           <ion-row>
             <ion-col col-6>
-              <h2>{{reservation.propertyName}}</h2>
-            </ion-col>
-            <ion-col>
-              <h3>{{reservation.checkInDate | date: "MMM dd"}}-{{reservation.checkOutDate | date: "MMM dd"}}</h3>
+              <h2>{{reservation.propertyName}}: {{reservation.checkInDate | date: "MMM dd"}}-{{reservation.checkOutDate | date: "MMM dd"}}</h2>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -64,10 +61,10 @@
           </ion-row>
         </ion-grid>
         <ion-thumbnail item-end>
-          <img *ngIf = "reservation.reservationSource == 'Airbnb';" src="assets/air-bnb.png">
+          <img *ngIf = "reservation.reservationSource == 'Airbnb';" src="assets/airbnb.png">
           <img *ngIf = "reservation.reservationSource == 'MyVR';" src="assets/my-vr-logo.gif">
           <img *ngIf = "reservation.reservationSource == 'Homeaway';" src="assets/home-away-logo.png">
-          <img *ngIf = "reservation.reservationSource == 'Flipkey';" src="assets/home-away-logo.png">
+          <img *ngIf = "reservation.reservationSource == 'Flipkey';" src="assets/flipkey.png">
         </ion-thumbnail>
       </ion-item>
       <ion-item-options side="right">

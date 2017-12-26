@@ -89,10 +89,18 @@
   </ion-item>
 
   <ion-item-divider color="light">Additional Information</ion-item-divider>
+      <ion-item>
+      <ion-label color="primary">Instructions Sent</ion-label>
+      <ion-checkbox item-end [(ngModel)]="reservation.instructionsSent"></ion-checkbox>
+    </ion-item>
     <ion-item>
-    <ion-label color="primary" stacked>Notes</ion-label>
-    <ion-textarea placeholder="Make notes here..." [(ngModel)]="reservation.notes"></ion-textarea>
-  </ion-item>
+      <ion-label color="primary">Damage Deposit Returned</ion-label>
+      <ion-checkbox item-end [(ngModel)]="reservation.damageDepositReturned"></ion-checkbox>
+    </ion-item>
+      <ion-item>
+      <ion-label color="primary" stacked>Notes</ion-label>
+      <ion-textarea placeholder="Make notes here..." [(ngModel)]="reservation.notes"></ion-textarea>
+    </ion-item>
   <button ion-button full (click)="addReservation()">Confirm</button>
 </ion-content>
 
