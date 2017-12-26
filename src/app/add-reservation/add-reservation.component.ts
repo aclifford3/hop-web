@@ -48,8 +48,10 @@ export class AddReservationComponent implements OnInit {
 
   ngOnInit() {
     this.propertyName = this.navParams.get('propertyName');
+    // Check if we are editing an existing reservation
     if (this.propertyName != null) {
       this.checkInDate = this.navParams.get('checkInDate');
+      this.title = 'Editing Reservation';
       this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
         .pipe(finalize( () => { this.isLoading = false; }))
         .subscribe((getReservationResponse: GetReservationResponse) => {
@@ -59,6 +61,7 @@ export class AddReservationComponent implements OnInit {
             console.log(error);
           });
     } else {
+      this.title = 'Adding New Reservation';
       console.log('Adding new reservation.');
     }
   }
