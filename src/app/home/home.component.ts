@@ -42,7 +42,12 @@ export class HomeComponent implements OnInit {
         this.reservations = reservations.Items;
       });
   }
+  // Add a new reservation
+  add() {
+    this.navCtrl.push(AddReservationComponent);
+  }
 
+  // Edit an existing reservation
   edit(reservation: Reservation) {
     this.navCtrl
       .push(AddReservationComponent, {propertyName: reservation.propertyName, checkInDate: reservation.checkInDate});
