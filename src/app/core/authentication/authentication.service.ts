@@ -8,7 +8,7 @@ import {CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession}
 export interface Credentials {
   // Customize received credentials here
   username: string;
-  token: string;
+  idToken: string;
 }
 
 export interface LoginContext {
@@ -23,7 +23,7 @@ export interface NewPasswordUser {
 }
 
 export interface CognitoCallback {
-  cognitoCallback(message: string, result: any): void;
+  cognitoCallback(message: string, result: any, context: LoginContext, credentials: Credentials): void;
 }
 
 const credentialsKey = 'credentials';
@@ -36,7 +36,6 @@ const credentialsKey = 'credentials';
 export class AuthenticationService {
 
   private _credentials: Credentials | null;
-
   constructor() {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
@@ -49,30 +48,24 @@ export class AuthenticationService {
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  login(context: LoginContext, callback: CognitoCallback): Observable<Credentials> {
+  login(context: LoginContext, callback: CognitoCallback) {
     // Replace by proper authentication call
-    this.authenticate(context.username, context.password, callback);
-    const data = {
-      username: context.username,
-      token: "12345"
-    };
-    this.setCredentials(data, context.remember);
-    return of(data);
+    this.authenticate(context, callback);
   }
 
   newPassword(newPasswordUser: NewPasswordUser, callback: CognitoCallback): void {
     console.log(newPasswordUser);
     // Get these details and call
-    //cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
-    let authenticationData = {
+    // cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
+    const authenticationData = {
       Username: this._credentials.username,
       Password: newPasswordUser.oldPassword,
     };
-    let authenticationDetails = new AuthenticationDetails(authenticationData);
+    const authenticationDetails = new AuthenticationDetails(authenticationData);
 
-    console.log("UserLoginService: Params set...Authenticating the user");
-    let cognitoUser = this.getCognitoUser(this._credentials.username)
-    console.log("UserLoginService: config is " + AWS.config);
+    console.log('UserLoginService: Params set...Authenticating the user');
+    const cognitoUser = this.getCognitoUser(this._credentials.username);
+    console.log('UserLoginService: config is ' + AWS.config);
     cognitoUser.authenticateUser(authenticationDetails, {
       newPasswordRequired: function (userAttributes: any, requiredAttributes: any) {
         // User was signed up by an admin and must provide new
@@ -80,37 +73,36 @@ export class AuthenticationService {
         // authentication.
 
         // the api doesn't accept this field back
-        //delete userAttributes.email_verified;
+        // delete userAttributes.email_verified;
         cognitoUser.completeNewPasswordChallenge(newPasswordUser.newPassword, requiredAttributes, {
-          onSuccess: function (result) {
-            callback.cognitoCallback(null, userAttributes);
+          onSuccess: function () {
+            callback.cognitoCallback(null, userAttributes, null, null);
           },
           onFailure: function (err) {
-            callback.cognitoCallback(err, null);
+            callback.cognitoCallback(err, null, null, null);
           }
         });
       },
       onSuccess: function (result) {
-        callback.cognitoCallback(null, result);
+        callback.cognitoCallback(null, result, null, null);
       },
       onFailure: function (err) {
-        callback.cognitoCallback(err, null);
+        callback.cognitoCallback(err, null, null, null);
       }
     });
   }
 
-  authenticate(username: string, password: string, callback: CognitoCallback) {
-
+  authenticate(context: LoginContext, callback: CognitoCallback) {
     const authenticationData = {
-      Username : username,
-      Password : password,
+      Username : context.username,
+      Password : context.password,
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
-    const cognitoUser = this.getCognitoUser(username);
+    const cognitoUser = this.getCognitoUser(context.username);
 
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result: CognitoUserSession) {
-        console.log('access token + ' + result.getAccessToken().getJwtToken());
+        console.log('id token + ' + result.getIdToken().getJwtToken());
 
         AWS.config.region = 'us-east-1';
 
@@ -120,7 +112,6 @@ export class AuthenticationService {
             'cognito-idp.us-east-1.amazonaws.com/us-east-1_ThFdWlCzs' : result.getIdToken().getJwtToken()
           }
         });
-
 
         // //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
         // AWS.config.credentials.refresh((error) => {
@@ -132,17 +123,21 @@ export class AuthenticationService {
         //     console.log('Successfully logged!');
         //   }
         // });
-        callback.cognitoCallback(null, result)
+        // Store ID token in credentials
+        const credentials = {
+          username: context.username,
+          idToken: result.getIdToken().getJwtToken()
+        };
+        // Callback to login component
+        callback.cognitoCallback(null, result, context, credentials);
       },
       newPasswordRequired: function (userAttributes, requiredAttributes) {
-        console.debug('New password is required.');
-        callback.cognitoCallback("A new password is required.", null);
+        callback.cognitoCallback('A new password is required.', null, null, null);
       },
       onFailure: function(err: any) {
-        //alert(err);
-        callback.cognitoCallback(err.message, null)
+        // alert(err);
+        callback.cognitoCallback(err.message, null, null, null);
       },
-
     });
   }
 
@@ -186,7 +181,6 @@ export class AuthenticationService {
   get credentials(): Credentials | null {
     return this._credentials;
   }
-
   /**
    * Sets the user credentials.
    * The credentials may be persisted across sessions by setting the `remember` parameter to true.
@@ -194,12 +188,13 @@ export class AuthenticationService {
    * @param {Credentials=} credentials The user credentials.
    * @param {boolean=} remember True to remember credentials across sessions.
    */
-  private setCredentials(credentials?: Credentials, remember?: boolean) {
+  public setCredentials (credentials?: Credentials, remember?: boolean) {
     this._credentials = credentials || null;
-
+    console.log('Setting credentials: ' + JSON.stringify(credentials));
     if (credentials) {
       const storage = remember ? localStorage : sessionStorage;
       storage.setItem(credentialsKey, JSON.stringify(credentials));
+      console.log('Set credentials');
     } else {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);

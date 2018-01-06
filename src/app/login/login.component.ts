@@ -7,7 +7,11 @@ import { finalize } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Logger } from '../core/logger.service';
 import { I18nService } from '../core/i18n.service';
-import {AuthenticationService, CognitoCallback} from '../core/authentication/authentication.service';
+import {
+  AuthenticationService, CognitoCallback, Credentials,
+  LoginContext
+} from '../core/authentication/authentication.service';
+import {CognitoUserSession} from 'amazon-cognito-identity-js';
 
 const log = new Logger('Login');
 
@@ -35,8 +39,8 @@ export class LoginComponent implements OnInit, CognitoCallback {
 
   login() {
     const loading = this.loadingController.create();
-    //loading.present();
-    this.authenticationService.login(this.loginForm.value, this)
+    // loading.present();
+    this.authenticationService.login(this.loginForm.value, this);
       // .pipe(finalize(() => {
       //    this.loginForm.markAsPristine();
       //    loading.dismiss();
@@ -74,20 +78,21 @@ export class LoginComponent implements OnInit, CognitoCallback {
     });
   }
 
-  cognitoCallback(message: string, result: any) {
-    if (message != null) { //error
+  cognitoCallback(message: string, result: CognitoUserSession, context: LoginContext, credentials: Credentials) {
+    if (message != null) { // error
       this.error = message;
-      console.log("error: " + this.error);
+      console.log('error: ' + this.error);
       // if (this.error === 'User is not confirmed.') {
       //   console.log("redirecting");
       //   this.router.navigate(['/home/confirmRegistration', this.email]);
       // }
       if (this.error === 'A new password is required.') {
-        console.log("redirecting to set new password");
+        console.log('redirecting to set new password');
         this.router.navigate(['/reset-password']);
       }
-    } else { //success
-      console.log('Successfully logged in.')
+    } else { // success
+      this.authenticationService.setCredentials(credentials, context.remember);
+      console.log('Successfully logged in.');
       this.router.navigate(['/'], { replaceUrl: true });
     }
   }
