@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {AuthenticationService} from '../core/authentication/authentication.service';
 
-const url = 'https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Dev/reservations';
-const headers = new HttpHeaders().set('x-api-key', 'Ai7RemrPPk96XGDz8pdHw1ZUeJZgDXGW18iispp9');
+const url = 'https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Stage/reservations';
+let headers = new HttpHeaders();
 
 export interface Reservation {
   propertyName: string;
@@ -38,10 +39,15 @@ export interface Response {
   body: string;
 }
 
+declare let apigClientFactory: any;
+
 @Injectable()
 export class HopApiService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private authService: AuthenticationService) {
+    headers = headers.set('Authorization', authService.credentials.idToken);
+  }
 
   getReservations() {
     return this.httpClient.get<GetReservationsResponse>(url, {headers: headers });

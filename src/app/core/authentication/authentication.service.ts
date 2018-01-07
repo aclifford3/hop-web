@@ -190,11 +190,9 @@ export class AuthenticationService {
    */
   public setCredentials (credentials?: Credentials, remember?: boolean) {
     this._credentials = credentials || null;
-    console.log('Setting credentials: ' + JSON.stringify(credentials));
     if (credentials) {
       const storage = remember ? localStorage : sessionStorage;
       storage.setItem(credentialsKey, JSON.stringify(credentials));
-      console.log('Set credentials');
     } else {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);
