@@ -9,6 +9,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import {HopApiService} from "./hop-api.service";
 import {AddReservationModule} from '../add-reservation/add-reservation.module';
+import {PropertyNamePipe} from './property-name.pipe';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import {AddReservationModule} from '../add-reservation/add-reservation.module';
     HomeComponent
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    PropertyNamePipe
   ],
   providers: [
     HopApiService
