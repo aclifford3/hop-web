@@ -3,12 +3,16 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import * as AWS from 'aws-sdk/global';
-import {CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession} from 'amazon-cognito-identity-js';
+import {
+  CognitoUserPool, CognitoUser, AuthenticationDetails, CognitoUserSession,
+  CognitoRefreshToken
+} from 'amazon-cognito-identity-js';
 
 export interface Credentials {
   // Customize received credentials here
   username: string;
   idToken: string;
+  refreshToken: string;
 }
 
 export interface LoginContext {
@@ -40,6 +44,7 @@ export class AuthenticationService {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
+      this.refresh();
     }
   }
 
@@ -92,6 +97,35 @@ export class AuthenticationService {
     });
   }
 
+  /**
+   * Refresh user session and id token
+   */
+  refresh() {
+    const username = this._credentials.username;
+    const refreshToken = this._credentials.refreshToken;
+    console.log('Refresh token is ' + JSON.stringify(refreshToken));
+    const cognitoUser = this.getCognitoUser(username);
+
+    cognitoUser.refreshSession(new CognitoRefreshToken({RefreshToken: refreshToken}), (err, session) => {
+      if (err) { throw err; }
+      const tokens = this.getTokens(session);
+      const credentials = {
+        username: username,
+        idToken: tokens.idToken,
+        refreshToken: tokens.refreshToken
+      };
+      this.setCredentials(credentials);
+    });
+  }
+
+  getTokens = function(session: any) {
+    return {
+      accessToken: session.getAccessToken().getJwtToken(),
+      idToken: session.getIdToken().getJwtToken(),
+      refreshToken: session.getRefreshToken().getToken()
+    };
+  };
+
   authenticate(context: LoginContext, callback: CognitoCallback) {
     const authenticationData = {
       Username : context.username,
@@ -126,7 +160,8 @@ export class AuthenticationService {
         // Store ID token in credentials
         const credentials = {
           username: context.username,
-          idToken: result.getIdToken().getJwtToken()
+          idToken: result.getIdToken().getJwtToken(),
+          refreshToken: result.getRefreshToken().getToken()
         };
         // Callback to login component
         callback.cognitoCallback(null, result, context, credentials);
