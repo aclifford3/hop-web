@@ -136,7 +136,6 @@ export class AuthenticationService {
 
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result: CognitoUserSession) {
-        console.log('id token + ' + result.getIdToken().getJwtToken());
 
         AWS.config.region = 'us-east-1';
 

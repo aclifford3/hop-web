@@ -39,31 +39,36 @@ export interface Response {
   body: string;
 }
 
-declare let apigClientFactory: any;
-
 @Injectable()
 export class HopApiService {
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) {
-    headers = headers.set('Authorization', authService.credentials.idToken);
   }
 
   getReservations() {
+    this.setHeaders();
     return this.httpClient.get<GetReservationsResponse>(url, {headers: headers });
   }
 
   getReservationById(propertyName: string, checkInDate: string) {
+    this.setHeaders();
     return this.httpClient
       .get<GetReservationResponse>(url + '/' + propertyName + '/' + checkInDate, {headers: headers });
   }
 
   addReservation(reservation: Reservation) {
+    this.setHeaders();
     return this.httpClient.post<Response>(url, reservation, {headers: headers });
   }
 
   deleteReservation(propertyName: string, checkInDate: string) {
+    this.setHeaders();
     return this.httpClient.delete<Response>(url + '/' + propertyName + '/' + checkInDate, {headers: headers }  );
+  }
+
+  setHeaders() {
+    headers = headers.set('Authorization', this.authService.credentials.idToken);
   }
 
   //
