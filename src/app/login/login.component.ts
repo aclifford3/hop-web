@@ -88,10 +88,11 @@ export class LoginComponent implements OnInit, CognitoCallback {
       //   console.log("redirecting");
       //   this.router.navigate(['/home/confirmRegistration', this.email]);
       // }
-      if (this.error === 'A new password is required.') {
+      if (this.error === 'A new password is required.' || this.error === 'Password reset required for the user') {
+        this.authenticationService.setCredentials(credentials, context.remember);
         this.router.navigate(['/reset-password']);
       }
-    } else { // success
+    } else {// success
       console.log('Successfully logged in.');
       this.authenticationService.setCredentials(credentials, context.remember);
       this.router.navigate(['/'], { replaceUrl: true });

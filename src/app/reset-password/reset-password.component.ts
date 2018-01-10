@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {LoadingController, Platform} from "ionic-angular";
-import {Router} from "@angular/router";
-import {AuthenticationService, CognitoCallback} from "../core/authentication/authentication.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {I18nService} from "../core/i18n.service";
-import {environment} from "../../environments/environment";
+import {LoadingController, Platform} from 'ionic-angular';
+import {Router} from '@angular/router';
+import {
+  AuthenticationService, CognitoCallback, Credentials,
+  LoginContext
+} from '../core/authentication/authentication.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {I18nService} from '../core/i18n.service';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-reset-password',
@@ -40,20 +43,24 @@ export class ResetPasswordComponent implements OnInit, CognitoCallback {
   ngOnInit() {
   }
 
-  resetPassword(){
-    this.authenticationService.newPassword(this.resetPasswordForm.value, this)
+  resetPassword() {
+    const loading = this.loadingController.create();
+    loading.present();
+    this.authenticationService.newPassword(this.resetPasswordForm.value, this);
+    loading.dismiss();
+    this.resetPasswordForm.markAsPristine();
   }
 
-  cognitoCallback(message: string, result: any) {
-    if (message != null) { //error
+  cognitoCallback(message: string, result: any, context: LoginContext, credentials: Credentials) {
+    if (message != null) { // error
       this.error = message;
-      console.log("error: " + this.error);
+      console.log('error: ' + this.error);
       // if (this.error === 'User is not confirmed.') {
       //   console.log("redirecting");
       //   this.router.navigate(['/home/confirmRegistration', this.email]);
       // }
-    } else { //success
-      console.debug('Successfully reset password.')
+    } else { // success
+      this.authenticationService.setCredentials(credentials, true);
       this.router.navigate(['/'], { replaceUrl: true });
     }
   }

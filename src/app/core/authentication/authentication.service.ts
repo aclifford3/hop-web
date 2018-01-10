@@ -11,8 +11,8 @@ import {
 export interface Credentials {
   // Customize received credentials here
   username: string;
-  idToken: string;
-  refreshToken: string;
+  idToken?: string;
+  refreshToken?: string;
 }
 
 export interface LoginContext {
@@ -44,7 +44,10 @@ export class AuthenticationService {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
-      this.refresh();
+      // If the refresh token is set, refresh user session and tokens
+      if (this._credentials.refreshToken) {
+        this.refresh();
+      }
     }
   }
 
@@ -59,7 +62,6 @@ export class AuthenticationService {
   }
 
   newPassword(newPasswordUser: NewPasswordUser, callback: CognitoCallback): void {
-    console.log(newPasswordUser);
     // Get these details and call
     // cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
     const authenticationData = {
@@ -69,6 +71,7 @@ export class AuthenticationService {
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     console.log('UserLoginService: Params set...Authenticating the user');
+    console.log(this._credentials);
     const cognitoUser = this.getCognitoUser(this._credentials.username);
     console.log('UserLoginService: config is ' + AWS.config);
     cognitoUser.authenticateUser(authenticationDetails, {
@@ -80,8 +83,13 @@ export class AuthenticationService {
         // the api doesn't accept this field back
         // delete userAttributes.email_verified;
         cognitoUser.completeNewPasswordChallenge(newPasswordUser.newPassword, requiredAttributes, {
-          onSuccess: function () {
-            callback.cognitoCallback(null, userAttributes, null, null);
+          onSuccess: function (userSession: CognitoUserSession) {
+            const credentials = {
+              username: authenticationDetails.getUsername(),
+              idToken: userSession.getIdToken().getJwtToken(),
+              refreshToken: userSession.getRefreshToken().getToken()
+            };
+            callback.cognitoCallback(null, userAttributes, null, credentials);
           },
           onFailure: function (err) {
             callback.cognitoCallback(err, null, null, null);
@@ -166,11 +174,16 @@ export class AuthenticationService {
         callback.cognitoCallback(null, result, context, credentials);
       },
       newPasswordRequired: function (userAttributes, requiredAttributes) {
-        callback.cognitoCallback('A new password is required.', null, null, null);
+        const credentials = {
+          username: context.username
+        };
+        callback.cognitoCallback('A new password is required.', null, context, credentials);
       },
       onFailure: function(err: any) {
-        // alert(err);
-        callback.cognitoCallback(err.message, null, null, null);
+        const credentials = {
+          username: context.username
+        };
+        callback.cognitoCallback(err.message, null, context, credentials);
       },
     });
   }
