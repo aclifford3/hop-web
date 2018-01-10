@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoadingController, Platform } from 'ionic-angular';
+import {AlertController, LoadingController, Platform} from 'ionic-angular';
 import { finalize } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -39,8 +39,10 @@ export class LoginComponent implements OnInit, CognitoCallback {
 
   login() {
     const loading = this.loadingController.create();
-    // loading.present();
+    loading.present();
+    this.loginForm.markAsPristine();
     this.authenticationService.login(this.loginForm.value, this);
+    loading.dismiss();
       // .pipe(finalize(() => {
       //    this.loginForm.markAsPristine();
       //    loading.dismiss();
@@ -78,7 +80,7 @@ export class LoginComponent implements OnInit, CognitoCallback {
     });
   }
 
-  cognitoCallback(message: string, result: CognitoUserSession, context: LoginContext, credentials: Credentials) {
+  cognitoCallback(message: string, result: CognitoUserSession, context?: LoginContext, credentials?: Credentials) {
     if (message != null) { // error
       this.error = message;
       console.log('error: ' + this.error);
@@ -87,12 +89,11 @@ export class LoginComponent implements OnInit, CognitoCallback {
       //   this.router.navigate(['/home/confirmRegistration', this.email]);
       // }
       if (this.error === 'A new password is required.') {
-        console.log('redirecting to set new password');
         this.router.navigate(['/reset-password']);
       }
     } else { // success
-      this.authenticationService.setCredentials(credentials, context.remember);
       console.log('Successfully logged in.');
+      this.authenticationService.setCredentials(credentials, context.remember);
       this.router.navigate(['/'], { replaceUrl: true });
     }
   }
