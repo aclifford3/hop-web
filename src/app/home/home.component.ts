@@ -4,7 +4,7 @@ import { finalize } from 'rxjs/operators';
 import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 
 @Component({
@@ -27,17 +27,22 @@ export class HomeComponent implements OnInit {
   constructor(private hopApiService: HopApiService,
               private router: Router,
               private navCtrl: NavController,
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController) { }
 
   reservations: Reservation[];
   propertyNameFilter: string;
   version: string = environment.version;
 
   ngOnInit() {
+    const loading = this.loadingCtrl.create();
+    loading.present();
     this.shouldHide = true;
     this.isLoading = true;
     this.hopApiService.getReservations()
-      .pipe(finalize(() => { this.isLoading = false; }))
+      .pipe(finalize(() => { this.isLoading = false;
+        loading.dismiss();
+      }))
       .subscribe((reservations: GetReservationsResponse) => {
         this.reservations = reservations.Items;
       });

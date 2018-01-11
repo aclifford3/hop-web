@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {GetReservationResponse, HopApiService, Reservation, Response} from '../home/hop-api.service';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {AlertController, NavParams} from 'ionic-angular';
+import {AlertController, LoadingController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'app-add-reservation',
@@ -20,7 +20,8 @@ export class AddReservationComponent implements OnInit {
   constructor(private hopApiService: HopApiService,
               private router: Router,
               private navParams: NavParams,
-              private alertCtrl: AlertController) { }
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController) { }
 
   response: Response;
   version: string = environment.version;
@@ -47,13 +48,18 @@ export class AddReservationComponent implements OnInit {
   };
 
   ngOnInit() {
+    const loading = this.loadingCtrl.create();
+    loading.present();
     this.propertyName = this.navParams.get('propertyName');
     // Check if we are editing an existing reservation
     if (this.propertyName != null) {
       this.checkInDate = this.navParams.get('checkInDate');
       this.title = 'Editing Reservation';
       this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
-        .pipe(finalize( () => { this.isLoading = false; }))
+        .pipe(finalize( () => {
+          this.isLoading = false;
+          loading.dismiss();
+        }))
         .subscribe((getReservationResponse: GetReservationResponse) => {
             this.reservation = getReservationResponse.Item;
           },
@@ -67,9 +73,14 @@ export class AddReservationComponent implements OnInit {
   }
 
   addReservation() {
+    const loading = this.loadingCtrl.create();
+    loading.present();
     this.isLoading = true;
     this.hopApiService.addReservation(this.reservation)
-      .pipe(finalize(() => { this.isLoading = false; }))
+      .pipe(finalize(() => {
+        this.isLoading = false;
+        loading.dismiss();
+      }))
       .subscribe((response: Response) => {
         this.response = response;
         const alert = this.alertCtrl.create({
