@@ -67,6 +67,7 @@ export class AddReservationComponent implements OnInit {
             console.log(error);
           });
     } else {
+      loading.dismiss();
       this.title = 'Adding New Reservation';
       console.log('Adding new reservation.');
     }
