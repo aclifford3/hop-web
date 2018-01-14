@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   version: '(dev)',
-  serverUrl: '/api',
+  serverUrl: 'https://api.hop-web.com/Dev/reservations',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',

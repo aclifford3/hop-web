@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from '../core/authentication/authentication.service';
+import {environment} from '../../environments/environment';
 
-const url = 'https://ubk2kssfj5.execute-api.us-east-1.amazonaws.com/Stage/reservations';
+const url = environment.serverUrl;
+const apiKey = 'Ai7RemrPPk96XGDz8pdHw1ZUeJZgDXGW18iispp9';
 let headers = new HttpHeaders();
 
 export interface Reservation {
@@ -47,12 +49,12 @@ export class HopApiService {
   }
 
   getReservations() {
-    this.setHeaders();
+    this.setApiKey()
     return this.httpClient.get<GetReservationsResponse>(url, {headers: headers });
   }
 
   getReservationById(propertyName: string, checkInDate: string) {
-    this.setHeaders();
+    this.setApiKey();
     return this.httpClient
       .get<GetReservationResponse>(url + '/' + propertyName + '/' + checkInDate, {headers: headers });
   }
@@ -69,6 +71,10 @@ export class HopApiService {
 
   setHeaders() {
     headers = headers.set('Authorization', this.authService.credentials.idToken);
+  }
+
+  setApiKey() {
+    headers = headers.set('x-api-key', apiKey);
   }
 
   //
