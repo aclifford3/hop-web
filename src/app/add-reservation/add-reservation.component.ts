@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {GetReservationResponse, HopApiService, Reservation, Response} from '../home/hop-api.service';
 import {finalize} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {AlertController, LoadingController, NavParams} from 'ionic-angular';
+import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'app-add-reservation',
@@ -21,7 +21,8 @@ export class AddReservationComponent implements OnInit {
               private router: Router,
               private navParams: NavParams,
               private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController,
+              private navController: NavController) { }
 
   response: Response;
   version: string = environment.version;
@@ -90,6 +91,7 @@ export class AddReservationComponent implements OnInit {
           buttons: ['OK']
         });
         alert.present();
+        this.navController.pop(AddReservationComponent);
       }, error => {
         const alert = this.alertCtrl.create({
           title: 'Oops!',
