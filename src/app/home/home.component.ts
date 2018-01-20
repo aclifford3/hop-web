@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
 
   isLoading: boolean;
   shouldHide: boolean;
+  propertyNames: String[];
 
   // ngOnInit() {
   //   this.isLoading = true;
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit {
               private loadingCtrl: LoadingController) { }
 
   reservations: Reservation[];
-  propertyNameFilter: string;
+   propertyNameFilter: string;
   version: string = environment.version;
 
   ngOnInit() {
@@ -84,5 +85,35 @@ export class HomeComponent implements OnInit {
         alert.present();
         console.log(error);
       });
+  }
+
+  initializePropertyNames() {
+    this.propertyNames = [
+      'Palm Beach',
+      'Aruban Jewel',
+      'Blue Breeze',
+      'Casa Tranquila',
+      'Confederate',
+      'Dushi Iguana',
+      'Dushi Tortuga',
+      'Turnberry'
+    ];
+  }
+
+  getPropertyNames(ev: any) {
+    // Reset items back to all of the items
+    this.initializePropertyNames();
+
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // // if the value is an empty string don't filter the items
+    // if (val && val.trim() !== '') {
+    //   console.log('Value is ' + val);
+    //   this.propertyNames = this.propertyNames.filter((item) => {
+    //     return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+    //   });
+    // }
+    this.propertyNameFilter = val;
   }
 }

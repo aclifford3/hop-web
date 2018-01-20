@@ -8,19 +8,20 @@
           </button>
         </ion-col>
         <ion-col col-8>
-          <ion-item>
-              <ion-select [(ngModel)]="propertyNameFilter" placeholder="All">
-                <ion-option>All</ion-option>
-                <ion-option>Palm Beach</ion-option>
-                <ion-option>Aruban Jewel</ion-option>
-                <ion-option>Blue Breeze</ion-option>
-                <ion-option>Casa Tranquila</ion-option>
-                <ion-option>Confederate</ion-option>
-                <ion-option>Dushi Iguana</ion-option>
-                <ion-option>Dushi Tortuga</ion-option> 
-                <ion-option>Turnberry</ion-option>
-            </ion-select>
-          </ion-item>
+          <ion-searchbar (ionInput)="getPropertyNames($event)"></ion-searchbar>
+          <!--<ion-item>-->
+          <!--    <ion-select [(ngModel)]="propertyNameFilter" placeholder="All">-->
+            <!--    <ion-option>All</ion-option>-->
+            <!--    <ion-option>Palm Beach</ion-option>-->
+          <!--      <ion-option>Aruban Jewel</ion-option>-->
+          <!--      <ion-option>Blue Breeze</ion-option>-->
+          <!--      <ion-option>Casa Tranquila</ion-option>-->
+          <!--      <ion-option>Confederate</ion-option>-->
+          <!--      <ion-option>Dushi Iguana</ion-option>-->
+          <!--      <ion-option>Dushi Tortuga</ion-option> -->
+          <!--      <ion-option>Turnberry</ion-option>-->
+        <!--    </ion-select>-->
+        <!--  </ion-item>-->
         </ion-col>
         <ion-col col-2>
           <button ion-button>

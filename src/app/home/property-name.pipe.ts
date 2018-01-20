@@ -10,7 +10,8 @@ export class PropertyNamePipe implements PipeTransform {
     if (propertyName === undefined || propertyName === 'All') {
       return reservations;
     }
-    return reservations.filter(reservation => reservation.propertyName === propertyName);
+    return reservations.filter(reservation => reservation.propertyName.toLocaleUpperCase()
+      .startsWith(propertyName.toLocaleUpperCase()));
   }
 
 }
