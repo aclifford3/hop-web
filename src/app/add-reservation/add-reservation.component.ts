@@ -91,7 +91,7 @@ export class AddReservationComponent implements OnInit {
           buttons: ['OK']
         });
         alert.present();
-        this.navController.pop(AddReservationComponent);
+        this.navController.pop();
       }, error => {
         const alert = this.alertCtrl.create({
           title: 'Oops!',
