@@ -113,7 +113,6 @@ export class AuthenticationService {
   refresh() {
     const username = this._credentials.username;
     const refreshToken = this._credentials.refreshToken;
-    console.log('Refresh token is ' + JSON.stringify(refreshToken));
     const cognitoUser = this.getCognitoUser(username);
 
     cognitoUser.refreshSession(new CognitoRefreshToken({RefreshToken: refreshToken}), (err, session) => {
