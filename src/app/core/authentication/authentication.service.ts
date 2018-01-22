@@ -71,11 +71,7 @@ export class AuthenticationService {
       Password: newPasswordUser.oldPassword,
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
-
-    console.log('UserLoginService: Params set...Authenticating the user');
-    console.log(this._credentials);
     const cognitoUser = this.getCognitoUser(this._credentials.username);
-    console.log('UserLoginService: config is ' + AWS.config);
     cognitoUser.authenticateUser(authenticationDetails, {
       newPasswordRequired: function (userAttributes: any, requiredAttributes: any) {
         // User was signed up by an admin and must provide new
