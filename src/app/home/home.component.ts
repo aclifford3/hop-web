@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
+import {AuthenticationService} from '../core/authentication/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,12 @@ export class HomeComponent implements OnInit {
   isLoading: boolean;
   shouldHide: boolean;
   propertyNames: String[];
+  groupPermissions = {
+    admin: ['All'],
+    PalmBeach: ['Palm Beach'],
+    Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila']
+  };
 
   // ngOnInit() {
   //   this.isLoading = true;
@@ -29,7 +36,8 @@ export class HomeComponent implements OnInit {
               private router: Router,
               private navCtrl: NavController,
               private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController) { }
+              private loadingCtrl: LoadingController,
+              private authService: AuthenticationService) { }
 
   reservations: Reservation[];
    propertyNameFilter: string;
@@ -45,7 +53,17 @@ export class HomeComponent implements OnInit {
         loading.dismiss();
       }))
       .subscribe((reservations: GetReservationsResponse) => {
+        // Apply permissions filter to only include reservations user is permitted to view
+        const permittedPropertyNames = this.getPermittedPropertyNames();
+        // Store all reservations initially
         this.reservations = reservations.Items;
+        // If not admin, filter
+        if (!(permittedPropertyNames.indexOf('All') > -1)) {
+          console.log('User is not an admin.');
+          this.reservations = this.reservations.filter(function (reservation: Reservation) {
+            return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
+          });
+        }
       });
   }
   // Add a new reservation
@@ -115,5 +133,24 @@ export class HomeComponent implements OnInit {
     //   });
     // }
     this.propertyNameFilter = val;
+  }
+
+  /**
+   * Get list of property names user can access
+   */
+  getPermittedPropertyNames(): string[] {
+    let permittedPropertyNames: string[] = [];
+    const groups = this.authService.getUserGroups();
+    const groupPermissions = this.groupPermissions;
+    console.log('Groups are ' + groups);
+    Object.keys(groupPermissions).forEach(function(key: string) {
+      // If user has a group, give access to those properties
+      if (groups.indexOf(key) > -1) {
+        console.log('Found group ' + key);
+        permittedPropertyNames = permittedPropertyNames.concat(groupPermissions[key]);
+      }
+    });
+    console.log(JSON.stringify(permittedPropertyNames));
+    return permittedPropertyNames;
   }
 }

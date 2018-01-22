@@ -49,7 +49,7 @@ export class HopApiService {
   }
 
   getReservations() {
-    this.setApiKey()
+    this.setApiKey();
     return this.httpClient.get<GetReservationsResponse>(url, {headers: headers });
   }
 

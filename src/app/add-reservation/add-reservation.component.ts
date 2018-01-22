@@ -91,6 +91,7 @@ export class AddReservationComponent implements OnInit {
           buttons: ['OK']
         });
         alert.present();
+        // Pop edit/add page to go back to home
         this.navController.pop();
       }, error => {
         const alert = this.alertCtrl.create({

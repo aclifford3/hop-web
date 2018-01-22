@@ -30,6 +30,8 @@ export interface CognitoCallback {
   cognitoCallback(message: string, result: any, context: LoginContext, credentials: Credentials): void;
 }
 
+const jwtDecode = require('jwt-decode');
+
 const credentialsKey = 'credentials';
 
 /**
@@ -244,6 +246,12 @@ export class AuthenticationService {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);
     }
+  }
+
+  public getUserGroups(): string[] {
+    const decodedIdToken = jwtDecode(this.credentials.idToken);
+    const groups = decodedIdToken['cognito:groups'];
+    return groups;
   }
 
 }
