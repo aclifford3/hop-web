@@ -142,15 +142,12 @@ export class HomeComponent implements OnInit {
     let permittedPropertyNames: string[] = [];
     const groups = this.authService.getUserGroups();
     const groupPermissions = this.groupPermissions;
-    console.log('Groups are ' + groups);
     Object.keys(groupPermissions).forEach(function(key: string) {
       // If user has a group, give access to those properties
       if (groups.indexOf(key) > -1) {
-        console.log('Found group ' + key);
         permittedPropertyNames = permittedPropertyNames.concat(groupPermissions[key]);
       }
     });
-    console.log(JSON.stringify(permittedPropertyNames));
     return permittedPropertyNames;
   }
 }
