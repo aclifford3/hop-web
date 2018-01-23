@@ -22,7 +22,8 @@ export class HomeComponent implements OnInit {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
     Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila']
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila'],
+    US: ['Turnberry', 'Confederate']
   };
 
   // ngOnInit() {
