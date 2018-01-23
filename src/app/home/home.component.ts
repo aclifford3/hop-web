@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   isLoading: boolean;
   shouldHide: boolean;
   propertyNames: String[];
-  groupPermissions = {
+  groupPermissionMappings = {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
     Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
@@ -142,11 +142,11 @@ export class HomeComponent implements OnInit {
   getPermittedPropertyNames(): string[] {
     let permittedPropertyNames: string[] = [];
     const groups = this.authService.getUserGroups();
-    const groupPermissions = this.groupPermissions;
-    Object.keys(groupPermissions).forEach(function(key: string) {
+    const groupPermissionMappings = this.groupPermissionMappings;
+    Object.keys(groupPermissionMappings).forEach(function(key: string) {
       // If user has a group, give access to those properties
       if (groups.indexOf(key) > -1) {
-        permittedPropertyNames = permittedPropertyNames.concat(groupPermissions[key]);
+        permittedPropertyNames = permittedPropertyNames.concat(groupPermissionMappings[key]);
       }
     });
     return permittedPropertyNames;
