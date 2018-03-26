@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <ion-header>
   <ion-navbar color="primary">
     <ion-grid>
@@ -25,7 +26,7 @@
         </ion-col>
         <ion-col col-2>
           <button ion-button>
-            <ion-icon name="add-circle" (click)="add()"></ion-icon>
+            <i class="fa fa-plus-circle" (click)="add()"></i>
           </button>
         </ion-col>
       </ion-row>
@@ -47,15 +48,15 @@
               {{reservation.lastName}} · {{reservation.guestsNum}}
                 <span *ngIf = "reservation.apartment;">
                   ·
-                  <ion-icon name="home"></ion-icon>
+                  <i class="fa fa-home"></i>
                 </span>
                 <span *ngIf = "reservation.flightArrivalTime?.length>1;">
                   ·
-                  <ion-icon name="plane"></ion-icon>
+                  <i class="fa fa-plane"></i>
                 </span>
                 <span *ngIf = "reservation.instructionsSent;">
                   ·
-                <ion-icon name="paper"></ion-icon>
+                  <i class="fa fa-newspaper-o"></i>
                 </span>
             </ion-col>
             <ion-col>
@@ -72,7 +73,7 @@
       </ion-item>
       <ion-item-options side="right">
         <button ion-button color="danger" (click)="delete(reservation)">
-          <ion-icon name="trash"></ion-icon> delete
+          <i class="fa fa-trash"></i> delete
         </button>
       </ion-item-options>
     </ion-item-sliding>
