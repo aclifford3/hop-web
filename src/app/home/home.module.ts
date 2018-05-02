@@ -10,6 +10,7 @@ import { HomeComponent } from './home.component';
 import {HopApiService} from "./hop-api.service";
 import {AddReservationModule} from '../add-reservation/add-reservation.module';
 import {PropertyNamePipe} from './property-name.pipe';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   imports: [

@@ -3,7 +3,6 @@ import { finalize } from 'rxjs/operators';
 
 import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
 import {environment} from '../../environments/environment';
-import {Router} from '@angular/router';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
@@ -34,7 +33,6 @@ export class HomeComponent implements OnInit {
   // }
 
   constructor(private hopApiService: HopApiService,
-              private router: Router,
               private navCtrl: NavController,
               private alertCtrl: AlertController,
               private loadingCtrl: LoadingController,

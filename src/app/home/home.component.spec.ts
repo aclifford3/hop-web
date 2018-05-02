@@ -1,11 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Http, BaseRequestOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { IonicModule } from 'ionic-angular';
+import {IonicModule, NavController} from 'ionic-angular';
 
 import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home.component';
 import { QuoteService } from './quote.service';
+import {PropertyNamePipe} from './property-name.pipe';
+import {HopApiService} from './hop-api.service';
+import {CommonModule} from '@angular/common';
+import {AppModule} from '../app.module';
+import {HttpClientModule} from '@angular/common/http';
+import {AuthenticationService} from '../core/authentication/authentication.service';
+import {CoreModule} from '../core/core.module';
+import {AppComponent} from '../app.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -15,11 +23,18 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
         imports: [
           IonicModule.forRoot(HomeComponent),
-          SharedModule
+          SharedModule,
+          CommonModule,
+          HttpClientModule,
         ],
-        declarations: [HomeComponent],
+        declarations: [
+          HomeComponent,
+          PropertyNamePipe
+        ],
         providers: [
           QuoteService,
+          HopApiService,
+          AuthenticationService,
           MockBackend,
           BaseRequestOptions,
           {
