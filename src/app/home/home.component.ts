@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
     Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach'],
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul'],
     US: ['Turnberry', 'Confederate']
   };
 
@@ -115,7 +115,8 @@ export class HomeComponent implements OnInit {
       'Confederate',
       'Dushi Iguana',
       'Dushi Tortuga',
-      'Turnberry'
+      'Turnberry',
+      'Sol to Soul'
     ];
   }
 
