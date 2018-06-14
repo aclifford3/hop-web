@@ -4,7 +4,6 @@ import {AuthenticationService} from '../core/authentication/authentication.servi
 import {environment} from '../../environments/environment';
 
 const url = environment.serverUrl;
-const apiKey = 'Ai7RemrPPk96XGDz8pdHw1ZUeJZgDXGW18iispp9';
 let headers = new HttpHeaders();
 
 export interface Reservation {
@@ -49,12 +48,13 @@ export class HopApiService {
   }
 
   getReservations() {
-    this.setApiKey();
-    return this.httpClient.get<GetReservationsResponse>(url, {headers: headers });
+    // this.setApiKey();
+    this.setHeaders()
+    return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
   }
 
   getReservationById(propertyName: string, checkInDate: string) {
-    this.setApiKey();
+    this.setHeaders()
     return this.httpClient
       .get<GetReservationResponse>(url + '/' + propertyName + '/' + checkInDate, {headers: headers });
   }
@@ -71,10 +71,6 @@ export class HopApiService {
 
   setHeaders() {
     headers = headers.set('Authorization', this.authService.credentials.idToken);
-  }
-
-  setApiKey() {
-    headers = headers.set('x-api-key', apiKey);
   }
 
   //

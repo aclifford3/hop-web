@@ -103,19 +103,19 @@ describe('AuthenticationService', () => {
       tick();
 
       // Assert
-      // loginRequest.subscribe(() => {
-      //   expect(authenticationService.isAuthenticated()).toBe(true);
-      //
-      //   const request = authenticationService.logout();
-      //   tick();
-      //
-      //   request.subscribe(() => {
-      //     expect(authenticationService.isAuthenticated()).toBe(false);
-      //     expect(authenticationService.credentials).toBeNull();
-      //     expect(sessionStorage.getItem(credentialsKey)).toBeNull();
-      //     expect(localStorage.getItem(credentialsKey)).toBeNull();
-      //   });
-      // });
+      loginRequest.subscribe(() => {
+        expect(authenticationService.isAuthenticated()).toBe(true);
+
+        const request = authenticationService.logout();
+        tick();
+
+        request.subscribe(() => {
+          expect(authenticationService.isAuthenticated()).toBe(false);
+          expect(authenticationService.credentials).toBeNull();
+          expect(sessionStorage.getItem(credentialsKey)).toBeNull();
+          expect(localStorage.getItem(credentialsKey)).toBeNull();
+        });
+      });
     }));
 
     it('should clear persisted user authentication', fakeAsync(() => {
@@ -128,19 +128,19 @@ describe('AuthenticationService', () => {
       tick();
 
       // Assert
-      // loginRequest.subscribe(() => {
-      //   expect(authenticationService.isAuthenticated()).toBe(true);
-      //
-      //   const request = authenticationService.logout();
-      //   tick();
-      //
-      //   request.subscribe(() => {
-      //     expect(authenticationService.isAuthenticated()).toBe(false);
-      //     expect(authenticationService.credentials).toBeNull();
-      //     expect(sessionStorage.getItem(credentialsKey)).toBeNull();
-      //     expect(localStorage.getItem(credentialsKey)).toBeNull();
-      //   });
-      // });
+      loginRequest.subscribe(() => {
+        expect(authenticationService.isAuthenticated()).toBe(true);
+
+        const request = authenticationService.logout();
+        tick();
+
+        request.subscribe(() => {
+          expect(authenticationService.isAuthenticated()).toBe(false);
+          expect(authenticationService.credentials).toBeNull();
+          expect(sessionStorage.getItem(credentialsKey)).toBeNull();
+          expect(localStorage.getItem(credentialsKey)).toBeNull();
+        });
+      });
     }));
   });
 });
