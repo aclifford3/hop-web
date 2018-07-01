@@ -51,22 +51,18 @@ export class AddReservationComponent implements OnInit {
   ngOnInit() {
     const loading = this.loadingCtrl.create();
     loading.present();
-    this.propertyName = this.navParams.get('propertyName');
+    const checkInDate = this.navParams.get('checkInDate');
+    const propertyName = this.navParams.get('propertyName');
+    for (let i = 0; i < this.hopApiService.reservations.length; i++) {
+      const res = this.hopApiService.reservations[i];
+      if (res.checkInDate === checkInDate && res.propertyName === propertyName) {
+        this.reservation = res;
+        break;
+      }
+    }
     // Check if we are editing an existing reservation
     if (this.propertyName != null) {
-      this.checkInDate = this.navParams.get('checkInDate');
       this.title = 'Editing Reservation';
-      this.hopApiService.getReservationById(this.propertyName, this.checkInDate)
-        .pipe(finalize( () => {
-          this.isLoading = false;
-          loading.dismiss();
-        }))
-        .subscribe((getReservationResponse: GetReservationResponse) => {
-            this.reservation = getReservationResponse.Item;
-          },
-          error => {
-            console.log(error);
-          });
     } else {
       loading.dismiss();
       this.title = 'Adding New Reservation';

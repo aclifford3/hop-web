@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 const url = environment.serverUrl;
 let headers = new HttpHeaders();
 
+
 export interface Reservation {
   propertyName: string;
   checkInDate: string;
@@ -32,7 +33,7 @@ export interface GetReservationsResponse {
 }
 
 export interface GetReservationResponse {
-  Item: Reservation;
+  Items: Reservation;
 }
 
 export interface Response {
@@ -43,30 +44,26 @@ export interface Response {
 @Injectable()
 export class HopApiService {
 
+  reservations: Reservation[];
+
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) {
   }
 
-  getReservations() {
-    // this.setApiKey();
-    this.setHeaders()
-    return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
-  }
 
-  getReservationById(propertyName: string, checkInDate: string) {
-    this.setHeaders()
-    return this.httpClient
-      .get<GetReservationResponse>(url + '/' + propertyName + '/' + checkInDate, {headers: headers });
+  getReservations() {
+    this.setHeaders();
+    return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
   }
 
   addReservation(reservation: Reservation) {
     this.setHeaders();
-    return this.httpClient.post<Response>(url, reservation, {headers: headers });
+    return this.httpClient.put<Response>(url + '/update', reservation, {headers: headers });
   }
 
   deleteReservation(propertyName: string, checkInDate: string) {
     this.setHeaders();
-    return this.httpClient.delete<Response>(url + '/' + propertyName + '/' + checkInDate, {headers: headers }  );
+    return this.httpClient.delete<Response>(url + '/propertyName/' + propertyName + '/checkInDate/' + checkInDate, {headers: headers }  );
   }
 
   setHeaders() {

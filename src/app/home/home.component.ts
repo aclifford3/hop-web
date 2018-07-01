@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
               private authService: AuthenticationService) { }
 
   reservations: Reservation[];
-   propertyNameFilter: string;
+  propertyNameFilter: string;
   version: string = environment.version;
 
   ngOnInit() {
@@ -65,6 +65,8 @@ export class HomeComponent implements OnInit {
             return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
           });
         }
+        // Update reservations in shared service
+        this.hopApiService.reservations = this.reservations;
       });
   }
   // Add a new reservation
