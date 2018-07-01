@@ -4,7 +4,7 @@ import * as env from './.env.json';
 export const environment = {
   production: true,
   version: env.npm_package_version,
-  serverUrl: 'https://api.hop-web.com/Stage/reservations',
+  serverUrl: 'https://api.hop-web.com/Prod/reservations',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',
