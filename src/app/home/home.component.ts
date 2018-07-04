@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,8 @@ import {AuthenticationService} from '../core/authentication/authentication.servi
 })
 export class HomeComponent implements OnInit {
 
+  @Input() daysOfHistory: number;
+  reservations: Reservation[];
   isLoading: boolean;
   shouldHide: boolean;
   propertyNames: String[];
@@ -40,7 +43,6 @@ export class HomeComponent implements OnInit {
               private loadingCtrl: LoadingController,
               private authService: AuthenticationService) { }
 
-  reservations: Reservation[];
   propertyNameFilter: string;
   version: string = environment.version;
 
@@ -49,25 +51,41 @@ export class HomeComponent implements OnInit {
     loading.present();
     this.shouldHide = true;
     this.isLoading = true;
-    this.hopApiService.getReservations()
-      .pipe(finalize(() => { this.isLoading = false;
-        loading.dismiss();
-      }))
-      .subscribe((reservations: GetReservationsResponse) => {
-        // Apply permissions filter to only include reservations user is permitted to view
-        const permittedPropertyNames = this.getPermittedPropertyNames();
-        // Store all reservations initially
-        this.reservations = reservations.Items;
-        // If not admin, filter
-        if (!(permittedPropertyNames.indexOf('All') > -1)) {
-          console.log('User is not an admin.');
-          this.reservations = this.reservations.filter(function (reservation: Reservation) {
-            return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
-          });
-        }
-        // Update reservations in shared service
-        this.hopApiService.reservations = this.reservations;
+
+    let getReservations: Observable<GetReservationsResponse>;
+    if (this.daysOfHistory == null) {
+      getReservations = this.hopApiService.getReservations();
+    } else {
+      console.log('Getting history');
+      getReservations = this.hopApiService.getReservationsSince(this.daysOfHistory);
+    }
+    getReservations.pipe(finalize(() => { this.isLoading = false;
+      loading.dismiss();
+    }))
+    .subscribe((response: GetReservationsResponse) => {
+      console.log('Reservations raw: ', response.Items);
+      // Apply permissions filter to only include reservations user is permitted to view
+      this.filterUnauthorizedReservations(response);
+      // Update reservations in shared service
+      this.hopApiService.reservations = this.reservations;
+    });
+  }
+
+  /**
+   * Filter out reservations the user is not permitted to see
+   * @param {GetReservationsResponse} reservations
+   */
+  private filterUnauthorizedReservations(response: GetReservationsResponse) {
+    const permittedPropertyNames = this.getPermittedPropertyNames();
+    // Store all reservations initially
+    this.reservations = response.Items;
+    // If not admin, filter
+    if (!(permittedPropertyNames.indexOf('All') > -1)) {
+      this.reservations = response.Items.filter(function (reservation: Reservation) {
+        return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
       });
+    }
+    console.log('Reservations: ', this.reservations);
   }
   // Add a new reservation
   add() {
@@ -145,7 +163,9 @@ export class HomeComponent implements OnInit {
   getPermittedPropertyNames(): string[] {
     let permittedPropertyNames: string[] = [];
     const groups = this.authService.getUserGroups();
+    console.log('Groups: ', groups);
     const groupPermissionMappings = this.groupPermissionMappings;
+    console.log('Group permission mapping: ', this.groupPermissionMappings);
     Object.keys(groupPermissionMappings).forEach(function(key: string) {
       // If user has a group, give access to those properties
       if (groups.indexOf(key) > -1) {

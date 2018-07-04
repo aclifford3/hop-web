@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReservationHistoryComponent implements OnInit {
 
-  constructor() { }
+  daysOfHistory: number;
 
   ngOnInit() {
+    this.daysOfHistory = 360;
   }
 
 }

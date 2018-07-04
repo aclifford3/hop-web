@@ -50,10 +50,14 @@ export class HopApiService {
               private authService: AuthenticationService) {
   }
 
-
   getReservations() {
     this.setHeaders();
     return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
+  }
+
+  getReservationsSince(days: number) {
+    this.setHeaders();
+    return this.httpClient.get<GetReservationsResponse>(url + '/history/days/' + days, {headers: headers});
   }
 
   addReservation(reservation: Reservation) {
@@ -63,7 +67,8 @@ export class HopApiService {
 
   deleteReservation(propertyName: string, checkInDate: string) {
     this.setHeaders();
-    return this.httpClient.delete<Response>(url + '/propertyName/' + propertyName + '/checkInDate/' + checkInDate, {headers: headers }  );
+    return this.httpClient.delete<Response>(url + '/propertyName/' + propertyName + '/checkInDate/'
+      + checkInDate, {headers: headers }  );
   }
 
   setHeaders() {
