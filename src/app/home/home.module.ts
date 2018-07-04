@@ -28,6 +28,9 @@ import {PropertyNamePipe} from './property-name.pipe';
     HomeComponent,
     PropertyNamePipe
   ],
+  exports: [
+    HomeComponent
+  ],
   providers: [
     HopApiService
   ]
