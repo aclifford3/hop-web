@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
 import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
@@ -14,9 +14,10 @@ import {Observable} from 'rxjs/Observable';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 
-  @Input() daysOfHistory: number;
+  @Input() daysOfHistory: string;
+  @Input() title = 'Upcoming';
   reservations: Reservation[];
   isLoading: boolean;
   shouldHide: boolean;
@@ -69,6 +70,9 @@ export class HomeComponent implements OnInit {
       // Update reservations in shared service
       this.hopApiService.reservations = this.reservations;
     });
+  }
+  ngOnChanges() {
+    this.ngOnInit();
   }
 
   /**

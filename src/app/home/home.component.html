@@ -35,6 +35,9 @@
 </ion-header>
 <ion-content>
   <ion-list>
+    <ion-item>
+      <ion-title><span translate>{{title}}</span></ion-title>
+    </ion-item>
     <ion-item-sliding *ngFor="let reservation of (reservations | propertyName: propertyNameFilter)" >
       <ion-item detail-push (click)="edit(reservation)">
         <ion-grid>

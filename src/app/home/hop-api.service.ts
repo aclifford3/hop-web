@@ -55,7 +55,7 @@ export class HopApiService {
     return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
   }
 
-  getReservationsSince(days: number) {
+  getReservationsSince(days: string) {
     this.setHeaders();
     return this.httpClient.get<GetReservationsResponse>(url + '/history/days/' + days, {headers: headers});
   }
