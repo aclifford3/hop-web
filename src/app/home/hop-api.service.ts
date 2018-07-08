@@ -41,6 +41,9 @@ export interface Response {
   body: string;
 }
 
+export const upcomingReservationsKey = 'upcomingReservations';
+export const pastReservationsKey = 'pastReservations';
+
 @Injectable()
 export class HopApiService {
 
@@ -52,12 +55,20 @@ export class HopApiService {
 
   getReservations() {
     this.setHeaders();
-    return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
+    const obs = this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
+    obs.subscribe((response: GetReservationsResponse) => {
+      localStorage.setItem(upcomingReservationsKey, JSON.stringify(response));
+    });
+    return obs;
   }
 
   getReservationsSince(days: string) {
     this.setHeaders();
-    return this.httpClient.get<GetReservationsResponse>(url + '/history/days/' + days, {headers: headers});
+    const obs = this.httpClient.get<GetReservationsResponse>(url + '/history/days/' + days, {headers: headers});
+    obs.subscribe((response: GetReservationsResponse) => {
+      localStorage.setItem(pastReservationsKey, JSON.stringify(response));
+    });
+    return obs;
   }
 
   addReservation(reservation: Reservation) {

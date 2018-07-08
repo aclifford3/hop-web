@@ -1,11 +1,14 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
+import {
+  GetReservationsResponse, HopApiService, Reservation, Response,
+  upcomingReservationsKey
+} from './hop-api.service';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
-import {AddReservationComponent} from '../add-reservation/add-reservation.component';
+import {AddReservationComponent} from  '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
 import {Observable} from 'rxjs/Observable';
 
@@ -64,9 +67,15 @@ export class HomeComponent implements OnInit, OnChanges {
       loading.dismiss();
     }))
     .subscribe((response: GetReservationsResponse) => {
-      console.log('Reservations raw: ', response.Items);
+      console.log('Reservations raw: ', response);
       // Apply permissions filter to only include reservations user is permitted to view
       this.filterUnauthorizedReservations(response);
+      // Update reservations in shared service
+      this.hopApiService.reservations = this.reservations;
+    }, err => {
+      console.log('Could not retrieve reservations, loading from local storage', err);
+      // Apply permissions filter to only include reservations user is permitted to view
+      this.filterUnauthorizedReservations(JSON.parse(localStorage.getItem(upcomingReservationsKey)));
       // Update reservations in shared service
       this.hopApiService.reservations = this.reservations;
     });
