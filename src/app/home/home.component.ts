@@ -1,19 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import { finalize } from 'rxjs/operators';
 
-import {GetReservationsResponse, HopApiService, Reservation, Response} from './hop-api.service';
+import {
+  GetReservationsResponse, HopApiService, Reservation, Response,
+  upcomingReservationsKey
+} from './hop-api.service';
 import {environment} from '../../environments/environment';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
-import {AddReservationComponent} from '../add-reservation/add-reservation.component';
+import {AddReservationComponent} from  '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 
+  @Input() daysOfHistory: string;
+  @Input() title = 'Upcoming';
+  reservations: Reservation[];
   isLoading: boolean;
   shouldHide: boolean;
   propertyNames: String[];
@@ -21,7 +28,7 @@ export class HomeComponent implements OnInit {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
     Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach'],
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul'],
     US: ['Turnberry', 'Confederate']
   };
 
@@ -38,8 +45,7 @@ export class HomeComponent implements OnInit {
               private loadingCtrl: LoadingController,
               private authService: AuthenticationService) { }
 
-  reservations: Reservation[];
-   propertyNameFilter: string;
+  propertyNameFilter: string;
   version: string = environment.version;
 
   ngOnInit() {
@@ -47,23 +53,50 @@ export class HomeComponent implements OnInit {
     loading.present();
     this.shouldHide = true;
     this.isLoading = true;
-    this.hopApiService.getReservations()
-      .pipe(finalize(() => { this.isLoading = false;
-        loading.dismiss();
-      }))
-      .subscribe((reservations: GetReservationsResponse) => {
-        // Apply permissions filter to only include reservations user is permitted to view
-        const permittedPropertyNames = this.getPermittedPropertyNames();
-        // Store all reservations initially
-        this.reservations = reservations.Items;
-        // If not admin, filter
-        if (!(permittedPropertyNames.indexOf('All') > -1)) {
-          console.log('User is not an admin.');
-          this.reservations = this.reservations.filter(function (reservation: Reservation) {
-            return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
-          });
-        }
+
+    let getReservations: Observable<GetReservationsResponse>;
+    if (this.daysOfHistory == null) {
+      getReservations = this.hopApiService.getReservations();
+    } else {
+      console.log('Getting history');
+      getReservations = this.hopApiService.getReservationsSince(this.daysOfHistory);
+    }
+    getReservations.pipe(finalize(() => { this.isLoading = false;
+      loading.dismiss();
+    }))
+    .subscribe((response: GetReservationsResponse) => {
+      console.log('Reservations raw: ', response);
+      // Apply permissions filter to only include reservations user is permitted to view
+      this.filterUnauthorizedReservations(response);
+      // Update reservations in shared service
+      this.hopApiService.reservations = this.reservations;
+    }, err => {
+      console.log('Could not retrieve reservations, loading from local storage', err);
+      // Apply permissions filter to only include reservations user is permitted to view
+      this.filterUnauthorizedReservations(JSON.parse(localStorage.getItem(upcomingReservationsKey)));
+      // Update reservations in shared service
+      this.hopApiService.reservations = this.reservations;
+    });
+  }
+  ngOnChanges() {
+    this.ngOnInit();
+  }
+
+  /**
+   * Filter out reservations the user is not permitted to see
+   * @param {GetReservationsResponse} reservations
+   */
+  private filterUnauthorizedReservations(response: GetReservationsResponse) {
+    const permittedPropertyNames = this.getPermittedPropertyNames();
+    // Store all reservations initially
+    this.reservations = response.Items;
+    // If not admin, filter
+    if (!(permittedPropertyNames.indexOf('All') > -1)) {
+      this.reservations = response.Items.filter(function (reservation: Reservation) {
+        return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
       });
+    }
+    console.log('Reservations: ', this.reservations);
   }
   // Add a new reservation
   add() {
@@ -113,7 +146,8 @@ export class HomeComponent implements OnInit {
       'Confederate',
       'Dushi Iguana',
       'Dushi Tortuga',
-      'Turnberry'
+      'Turnberry',
+      'Sol to Soul'
     ];
   }
 
@@ -140,7 +174,9 @@ export class HomeComponent implements OnInit {
   getPermittedPropertyNames(): string[] {
     let permittedPropertyNames: string[] = [];
     const groups = this.authService.getUserGroups();
+    console.log('Groups: ', groups);
     const groupPermissionMappings = this.groupPermissionMappings;
+    console.log('Group permission mapping: ', this.groupPermissionMappings);
     Object.keys(groupPermissionMappings).forEach(function(key: string) {
       // If user has a group, give access to those properties
       if (groups.indexOf(key) > -1) {

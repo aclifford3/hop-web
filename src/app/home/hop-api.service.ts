@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 const url = environment.serverUrl;
 let headers = new HttpHeaders();
 
+
 export interface Reservation {
   propertyName: string;
   checkInDate: string;
@@ -32,7 +33,7 @@ export interface GetReservationsResponse {
 }
 
 export interface GetReservationResponse {
-  Item: Reservation;
+  Items: Reservation;
 }
 
 export interface Response {
@@ -40,8 +41,13 @@ export interface Response {
   body: string;
 }
 
+export const upcomingReservationsKey = 'upcomingReservations';
+export const pastReservationsKey = 'pastReservations';
+
 @Injectable()
 export class HopApiService {
+
+  reservations: Reservation[];
 
   constructor(private httpClient: HttpClient,
               private authService: AuthenticationService) {
@@ -49,18 +55,25 @@ export class HopApiService {
 
   getReservations() {
     this.setHeaders();
-    return this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
+    const obs = this.httpClient.get<GetReservationsResponse>(url + '/upcoming', {headers: headers });
+    obs.subscribe((response: GetReservationsResponse) => {
+      localStorage.setItem(upcomingReservationsKey, JSON.stringify(response));
+    });
+    return obs;
   }
 
-  getReservationById(propertyName: string, checkInDate: string) {
+  getReservationsSince(days: string) {
     this.setHeaders();
-    return this.httpClient.get<GetReservationResponse>(url + '/propertyName/' + propertyName + '/checkInDate/' +
-      checkInDate, {headers: headers });
+    const obs = this.httpClient.get<GetReservationsResponse>(url + '/history/days/' + days, {headers: headers});
+    obs.subscribe((response: GetReservationsResponse) => {
+      localStorage.setItem(pastReservationsKey, JSON.stringify(response));
+    });
+    return obs;
   }
 
   addReservation(reservation: Reservation) {
     this.setHeaders();
-    return this.httpClient.put<Response>(url + '/reservation', reservation, {headers: headers });
+    return this.httpClient.put<Response>(url + '/update', reservation, {headers: headers });
   }
 
   deleteReservation(propertyName: string, checkInDate: string) {

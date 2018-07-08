@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {AlertController, LoadingController, Platform} from 'ionic-angular';
-import { finalize } from 'rxjs/operators';
+import { LoadingController, Platform } from 'ionic-angular';
 
 import { environment } from '../../environments/environment';
-import { Logger } from '../core/logger.service';
 import { I18nService } from '../core/i18n.service';
 import {
   AuthenticationService, CognitoCallback, Credentials,
   LoginContext
 } from '../core/authentication/authentication.service';
 import {CognitoUserSession} from 'amazon-cognito-identity-js';
-
-const log = new Logger('Login');
 
 @Component({
   selector: 'app-login',

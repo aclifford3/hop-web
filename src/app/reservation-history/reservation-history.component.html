@@ -1,0 +1,17 @@
+<app-home [daysOfHistory]="daysOfHistory" [title]="title"></app-home>
+<ion-footer>
+  <ion-segment [(ngModel)]="daysOfHistory">
+    <ion-segment-button value="90">
+      3mo
+    </ion-segment-button>
+    <ion-segment-button value="180">
+      6mo
+    </ion-segment-button>
+    <ion-segment-button value="365">
+      1yr
+    </ion-segment-button>
+    <ion-segment-button value="10000000">
+      all
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>

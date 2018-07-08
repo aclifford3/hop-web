@@ -29,6 +29,9 @@ import {HttpClientModule} from '@angular/common/http';
     HomeComponent,
     PropertyNamePipe
   ],
+  exports: [
+    HomeComponent
+  ],
   providers: [
     HopApiService
   ]
