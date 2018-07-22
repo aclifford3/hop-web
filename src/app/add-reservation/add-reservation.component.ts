@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {environment} from '../../environments/environment';
-import {GetReservationResponse, HopApiService, Reservation, Response} from '../home/hop-api.service';
+import {HopApiService, Reservation, Response} from '../home/hop-api.service';
 import {finalize} from 'rxjs/operators';
-import {Router} from '@angular/router';
 import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
 
 @Component({
@@ -18,7 +17,6 @@ export class AddReservationComponent implements OnInit {
   checkInDate: string;
 
   constructor(private hopApiService: HopApiService,
-              private router: Router,
               private navParams: NavParams,
               private alertCtrl: AlertController,
               private loadingCtrl: LoadingController,
@@ -53,11 +51,14 @@ export class AddReservationComponent implements OnInit {
     loading.present();
     const checkInDate = this.navParams.get('checkInDate');
     const propertyName = this.navParams.get('propertyName');
-    for (let i = 0; i < this.hopApiService.reservations.length; i++) {
-      const res = this.hopApiService.reservations[i];
-      if (res.checkInDate === checkInDate && res.propertyName === propertyName) {
-        this.reservation = res;
-        break;
+    if (this.hopApiService.reservations == null) {
+    } else {
+      for (let i = 0; i < this.hopApiService.reservations.length; i++) {
+        const res = this.hopApiService.reservations[i];
+        if (res.checkInDate === checkInDate && res.propertyName === propertyName) {
+          this.reservation = res;
+          break;
+        }
       }
     }
     // Check if we are editing an existing reservation
