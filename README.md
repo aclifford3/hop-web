@@ -1,4 +1,5 @@
 # hop web
+[![Build Status](https://travis-ci.org/aclifford3/hop-web.svg?branch=develop)](https://travis-ci.org/aclifford3/hop-web)
 
 This project was generated with [ngX-Rocket](https://github.com/ngx-rocket/generator-ngx-rocket/)
 version 3.1.1
