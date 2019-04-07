@@ -7,7 +7,7 @@
     "build": "npm run env -s && ng build --prod",
     "start": "ng serve --aot --proxy-config proxy.conf.js",
     "lint": "ng lint --type-check && stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
-    "test": "ng test",
+    "test": "ng test --log-level debug",
     "test:ci": "npm run lint -s && ng test --single-run --code-coverage",
     "e2e": "ng e2e",
     "translations:extract": "ngx-translate-extract --input ./src --output ./src/translations/template.json --format=json --clean -sort --marker extract",
