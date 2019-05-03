@@ -47,7 +47,7 @@ module.exports = function(config) {
     },
     browsers: ['ChromeHeadlessCustom'],
     singleRun: false,
-    browserNoActivityTimeout: 600000,
+    browserNoActivityTimeout: 120000,
     debugMode: true
   });
 };
