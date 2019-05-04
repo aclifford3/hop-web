@@ -52,6 +52,6 @@ jobs:
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              npm build:prod
+              yarn build:prod
               aws s3 sync dist s3://hop-web --delete
             fi
