@@ -6,7 +6,7 @@ import {VERSION} from './version';
 
 export const environment = {
   production: false,
-  version: VERSION,
+  version: VERSION.version,
   serverUrl: 'https://api.hop-web.com/Dev/reservations',
   defaultLanguage: 'en-US',
   supportedLanguages: [
