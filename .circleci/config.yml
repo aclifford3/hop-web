@@ -6,11 +6,6 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
 jobs:
-  deploy:
-    docker:
-      - image: circleci/node:10.9.0-browsers
-    steps:
-      - aws-cli/install
   build:
     docker:
       # specify the version you desire here
@@ -25,7 +20,7 @@ jobs:
 
     steps:
       - checkout
-
+      - aws-cli/install
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -39,17 +34,5 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-  test:
-    docker:
-      - image: circleci/node:10.9.0-browsers
-    steps:
-      - checkout
-      # run tests!
+
       - run: yarn test
-workflows:
-  version: 2.1
-  dev:
-    jobs:
-      - build
-      - test
-      - deploy
