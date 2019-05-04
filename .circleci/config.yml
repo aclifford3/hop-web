@@ -46,10 +46,10 @@ jobs:
       - checkout
       # run tests!
       - run: yarn test
-  workflows:
-    version: 2
-    dev:
-      jobs:
-        - build
-        - test
-        - deploy
+workflows:
+  version: 2.1
+  dev:
+    jobs:
+      - build
+      - test
+      - deploy
