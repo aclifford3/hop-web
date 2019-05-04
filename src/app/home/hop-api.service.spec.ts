@@ -2,16 +2,15 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { HopApiService } from './hop-api.service';
 import {HttpClientModule} from '@angular/common/http';
-import {CoreModule} from '../core/core.module';
+import {AuthenticationService} from '../core/authentication/authentication.service';
+import {MockAuthenticationService} from '../core/authentication/authentication.service.mock';
 
 describe('HopApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        CoreModule
-      ],
-      providers: [HopApiService]
+      imports: [HttpClientModule],
+      providers: [HopApiService,
+        {provide: AuthenticationService, useClass: MockAuthenticationService}]
     });
   });
 

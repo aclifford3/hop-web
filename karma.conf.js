@@ -30,15 +30,24 @@ module.exports = function(config) {
       fixWebpackSourcePaths: true
     },
     angularCli: {
+      sourcemaps: false,
       environment: 'dev'
     },
     reporters: ['progress', 'junit'],
     port: 9876,
     colors: true,
     // Level of logging, can be: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_DEBUG,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
-    singleRun: false
+    customLaunchers: {
+      ChromeHeadlessCustom: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
+    browsers: ['ChromeHeadlessCustom'],
+    singleRun: true,
+    browserNoActivityTimeout: 10000,
+    debugMode: false
   });
 };

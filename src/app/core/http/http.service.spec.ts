@@ -56,7 +56,7 @@ describe('HttpService', () => {
   describe('request', () => {
     it('should prepend environment.serverUrl to the request url', fakeAsync(() => {
       // Act
-      httpService.request('/toto');
+      httpService.request(environment.serverUrl + '/toto');
       lastConnection.mockRespond(new Response(new ResponseOptions()));
       tick();
 
@@ -66,7 +66,7 @@ describe('HttpService', () => {
 
     it('should prepend environment.serverUrl to the request object url property', fakeAsync(() => {
       // Act
-      httpService.request(new Request(new RequestOptions({ url: '/toto' })));
+      httpService.request(new Request(new RequestOptions({ url: environment.serverUrl + '/toto' })));
       lastConnection.mockRespond(new Response(new ResponseOptions()));
       tick();
 
@@ -79,7 +79,7 @@ describe('HttpService', () => {
       const response = new Response(new ResponseOptions({ status: 500 }));
 
       // Act
-      const request = httpService.request('/toto');
+      const request = httpService.request(environment.serverUrl + '/toto');
       lastConnection.mockError(response as any);
       tick();
 

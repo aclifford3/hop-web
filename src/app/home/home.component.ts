@@ -7,7 +7,7 @@ import {
 } from './hop-api.service';
 import {environment} from '../../environments/environment';
 import {AlertController, LoadingController, NavController} from 'ionic-angular';
-import {AddReservationComponent} from  '../add-reservation/add-reservation.component';
+import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
 import {Observable} from 'rxjs/Observable';
 
