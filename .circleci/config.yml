@@ -20,21 +20,21 @@ jobs:
 
     steps:
       - checkout
+      - aws-cli/install
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              echo "Develop"
+              npm build:dev
+              aws s3 sync dist s3://hop-web-test --delete
             fi
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-              echo "Master"
+              npm build:prod
             fi
       - run:
           name: "Install missing library on awscli"
           command: sudo apt-get install -y libpython-dev
-      - aws-cli/install
-      - run: aws s3 ls
 
       # Download and cache dependencies
       - restore_cache:
