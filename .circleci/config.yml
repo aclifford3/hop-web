@@ -20,7 +20,13 @@ jobs:
 
     steps:
       - checkout
+
+      #Install AWS CLI
+      - run:
+          name: "Install missing library on awscli"
+          command: sudo apt-get install -y libpython-dev
       - aws-cli/install
+
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
@@ -32,9 +38,6 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               npm build:prod
             fi
-      - run:
-          name: "Install missing library on awscli"
-          command: sudo apt-get install -y libpython-dev
 
       # Download and cache dependencies
       - restore_cache:
