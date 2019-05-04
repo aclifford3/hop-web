@@ -25,7 +25,7 @@ jobs:
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
               echo "Develop"
       - run:
-        command: |
+          command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               echo "Master"
       - run:
