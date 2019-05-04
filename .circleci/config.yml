@@ -24,6 +24,8 @@ jobs:
           name: "Install missing library on awscli"
           command: sudo apt-get install -y libpython-dev
       - aws-cli/install
+      - run: aws s3 ls
+
       # Download and cache dependencies
       - restore_cache:
           keys:
