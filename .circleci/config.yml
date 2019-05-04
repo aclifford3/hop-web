@@ -41,6 +41,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: yarn test
+
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
@@ -51,6 +53,5 @@ jobs:
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               npm build:prod
+              aws s3 sync dist s3://hop-web --delete
             fi
-
-      - run: yarn test
