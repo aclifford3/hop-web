@@ -6,6 +6,11 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
 jobs:
+  deploy:
+    docker:
+      - image: circleci/node:10.9.0-browsers
+    steps:
+      - aws-cli/install
   build:
     docker:
       # specify the version you desire here
@@ -41,8 +46,10 @@ jobs:
       - checkout
       # run tests!
       - run: yarn test
-  deploy:
-    docker:
-      - image: circleci/node:10.9.0-browsers
-    steps:
-      - aws-cli/install
+  workflows:
+    version: 2
+    dev:
+      jobs:
+        - build
+        - test
+        - deploy
