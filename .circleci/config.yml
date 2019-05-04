@@ -25,6 +25,14 @@ jobs:
           command: sudo apt-get install -y libpython-dev
       - aws-cli/install
       - run: aws s3 ls
+      - when:
+          condition: $CIRCLE_BRANCH = dev
+          steps:
+            - run: echo "Branch is dev"
+      - when:
+          condition: $CIRCLE_BRANCH = master
+          steps:
+            - run: echo "Branch is master"
 
       # Download and cache dependencies
       - restore_cache:
