@@ -24,10 +24,12 @@ jobs:
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
               echo "Develop"
+            fi
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "master" ]]; then
               echo "Master"
+            fi
       - run:
           name: "Install missing library on awscli"
           command: sudo apt-get install -y libpython-dev
