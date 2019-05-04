@@ -21,11 +21,11 @@ jobs:
     steps:
       - checkout
       - when:
-          condition: $CIRCLE_BRANCH == develop
+          condition: [ $CIRCLE_BRANCH == develop ]
           steps:
             - run: echo "Branch is develop"
       - when:
-          condition: false
+          condition: [ $CIRCLE_BRANCH == master ]
           steps:
             - run: echo "Branch is master"
       - run:
