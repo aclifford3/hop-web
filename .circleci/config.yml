@@ -20,14 +20,14 @@ jobs:
 
     steps:
       - checkout
-      - when:
-          condition: [ "$CIRCLE_BRANCH" == "develop" ]
-          steps:
-            - run: echo "Branch is develop"
-      - when:
-          condition: [ "$CIRCLE_BRANCH" == "master" ]
-          steps:
-            - run: echo "Branch is master"
+      - run:
+          - command |
+            if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+              echo "Develop"
+      - run:
+          - command |
+            if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+              echo "Master"
       - run:
           name: "Install missing library on awscli"
           command: sudo apt-get install -y libpython-dev
