@@ -30,7 +30,7 @@ jobs:
       - run:
           command: |
             if [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-              npm build:dev
+              yarn build:dev
               aws s3 sync dist s3://hop-web-test --delete
             fi
       - run:
