@@ -110,31 +110,51 @@ export class HomeComponent implements OnInit, OnChanges {
   }
 
   delete(reservation: Reservation) {
-    this.isLoading = true;
-    this.hopApiService.deleteReservation(reservation.propertyName, reservation.checkInDate)
-      .pipe(finalize(() => { this.isLoading = false; }))
-      .subscribe((response: Response) => {
-        const alert = this.alertCtrl.create({
-          title: 'Delete Successful',
-          subTitle: 'Successfully deleted reservation for '
-          + reservation.propertyName + ' on ' + reservation.checkInDate,
-          buttons: ['OK']
-        });
-        alert.present();
-        this.reservations = this.reservations.filter(function(element: Reservation) {
-          return !(element.checkInDate === reservation.checkInDate &&
-            element.propertyName === reservation.propertyName);
-        });
-      }, error => {
-        const alert = this.alertCtrl.create({
-          title: 'Oops!',
-          subTitle: 'Something went wrong deleting your reservation for ' + reservation.propertyName + ' on '
-          + reservation.checkInDate,
-          buttons: ['OK']
-        });
-        alert.present();
-        console.log(error);
-      });
+    const confirmDeletionAlert = this.alertCtrl.create({
+      title: 'Confirm Deletion',
+      message: 'Delete reservation for ' + reservation.lastName + ' on ' + reservation.checkInDate + '?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Deletion cancelled.');
+          }
+        }, {
+          text: 'Delete',
+          handler: () => {
+            this.isLoading = true;
+            this.hopApiService.deleteReservation(reservation.propertyName, reservation.checkInDate)
+              .pipe(finalize(() => {
+                this.isLoading = false;
+              }))
+              .subscribe((response: Response) => {
+                const alert = this.alertCtrl.create({
+                  title: 'Deletion Successful',
+                  subTitle: 'Successfully deleted reservation for '
+                    + reservation.lastName + ' on ' + reservation.checkInDate,
+                  buttons: ['OK']
+                });
+                alert.present();
+                this.reservations = this.reservations.filter(function (element: Reservation) {
+                  return !(element.checkInDate === reservation.checkInDate &&
+                    element.propertyName === reservation.propertyName);
+                });
+              }, error => {
+                const alert = this.alertCtrl.create({
+                  title: 'Oops!',
+                  subTitle: 'Something went wrong deleting your reservation for ' + reservation.propertyName + ' on '
+                    + reservation.checkInDate,
+                  buttons: ['OK']
+                });
+                alert.present();
+                console.log(error);
+              });
+          }
+        }
+      ]
+    });
+    confirmDeletionAlert.present();
   }
 
   initializePropertyNames() {
