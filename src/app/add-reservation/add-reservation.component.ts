@@ -89,7 +89,7 @@ export class AddReservationComponent implements OnInit {
         });
         alert.present();
         // Pop edit/add page to go back to home
-        this.navController.pop();
+        this.navController.pop().then(() => this.navController.setRoot(this.navController.getActive().component));
       }, error => {
         const alert = this.alertCtrl.create({
           title: 'Oops!',
