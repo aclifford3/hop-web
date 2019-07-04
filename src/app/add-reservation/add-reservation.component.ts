@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HopApiService, Reservation, Response} from '../home/hop-api.service';
+import {GetReservationResponse, HopApiService, Reservation, Response} from '../home/hop-api.service';
 import {finalize} from 'rxjs/operators';
 import {AlertController, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-reservation',
@@ -20,7 +21,9 @@ export class AddReservationComponent implements OnInit {
               private navParams: NavParams,
               private alertCtrl: AlertController,
               private loadingCtrl: LoadingController,
-              private navController: NavController) { }
+              private navController: NavController,
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   response: Response;
   version: string = environment.version;
@@ -49,9 +52,19 @@ export class AddReservationComponent implements OnInit {
   ngOnInit() {
     const loading = this.loadingCtrl.create();
     loading.present();
-    const checkInDate = this.navParams.get('checkInDate');
-    const propertyName = this.navParams.get('propertyName');
+    const checkInDate = this.route.snapshot.firstChild.firstChild.paramMap.get('checkInDate');
+    const propertyName = this.route.snapshot.firstChild.firstChild.paramMap.get('propertyName');
+    console.log(this.route.snapshot.firstChild.firstChild);
+    console.log(propertyName);
+    console.log(checkInDate);
     if (this.hopApiService.reservations == null) {
+      // Load the reservation being edited
+      if (propertyName != null && checkInDate != null) {
+        this.hopApiService.getReservation(propertyName, checkInDate).subscribe((response: GetReservationResponse) => {
+          this.reservation = response.Item;
+          console.log(this.reservation);
+        });
+      }
     } else {
       for (let i = 0; i < this.hopApiService.reservations.length; i++) {
         const res = this.hopApiService.reservations[i];
@@ -89,7 +102,8 @@ export class AddReservationComponent implements OnInit {
         });
         alert.present();
         // Pop edit/add page to go back to home
-        this.navController.pop().then(() => this.navController.setRoot(this.navController.getActive().component));
+        this.router.navigate(['/home']);
+        // this.navController.pop().then(() => this.navController.setRoot(this.navController.getActive().component));
       }, error => {
         const alert = this.alertCtrl.create({
           title: 'Oops!',

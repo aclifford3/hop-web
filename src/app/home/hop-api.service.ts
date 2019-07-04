@@ -33,7 +33,7 @@ export interface GetReservationsResponse {
 }
 
 export interface GetReservationResponse {
-  Items: Reservation;
+  Item: Reservation;
 }
 
 export interface Response {
@@ -71,6 +71,11 @@ export class HopApiService {
     return obs;
   }
 
+  getReservation(propertyName: string, checkInDate: string) {
+    this.setHeaders();
+    return this.httpClient.get<GetReservationResponse>(url + '/propertyName/' + propertyName + '/checkInDate/'
+      + checkInDate, {headers: headers }  );
+  }
   addReservation(reservation: Reservation) {
     this.setHeaders();
     return this.httpClient.put<Response>(url + '/update', reservation, {headers: headers });

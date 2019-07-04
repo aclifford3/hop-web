@@ -10,6 +10,7 @@ import {AlertController, LoadingController, NavController} from 'ionic-angular';
 import {AddReservationComponent} from '../add-reservation/add-reservation.component';
 import {AuthenticationService} from '../core/authentication/authentication.service';
 import {Observable} from 'rxjs/Observable';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -43,7 +44,8 @@ export class HomeComponent implements OnInit, OnChanges {
               private navCtrl: NavController,
               private alertCtrl: AlertController,
               private loadingCtrl: LoadingController,
-              private authService: AuthenticationService) { }
+              private authService: AuthenticationService,
+              private router: Router) { }
 
   propertyNameFilter: string;
   version: string = environment.version;
@@ -100,7 +102,7 @@ export class HomeComponent implements OnInit, OnChanges {
   }
   // Add a new reservation
   add() {
-    this.navCtrl.push(AddReservationComponent);
+    this.router.navigate(['/reservation/add']);
   }
 
   // Edit an existing reservation

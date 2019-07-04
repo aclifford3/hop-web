@@ -39,7 +39,7 @@
       <ion-title><span translate>{{title}}</span></ion-title>
     </ion-item>
     <ion-item-sliding *ngFor="let reservation of (reservations | propertyName: propertyNameFilter)" >
-      <ion-item detail-push (click)="edit(reservation)">
+      <ion-item detail-push routerLink="/reservation/{{reservation.propertyName}}/{{reservation.checkInDate}}">
         <ion-grid>
           <ion-row>
             <ion-col col-6>
