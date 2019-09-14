@@ -28,9 +28,8 @@ export class HomeComponent implements OnInit, OnChanges {
   groupPermissionMappings = {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
-    Dushi: ['Dushi Tortuga', 'Dushi Iguana'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul'],
-    US: ['Turnberry', 'Confederate']
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul', 'Palm Beach 462'],
+    US: ['Confederate']
   };
 
   // ngOnInit() {
@@ -166,10 +165,9 @@ export class HomeComponent implements OnInit, OnChanges {
       'Blue Breeze',
       'Casa Tranquila',
       'Confederate',
-      'Dushi Iguana',
-      'Dushi Tortuga',
       'Turnberry',
-      'Sol to Soul'
+      'Sol to Soul',
+      'Palm Beach 462'
     ];
   }
 
