@@ -20,7 +20,7 @@ import {Router} from '@angular/router';
 export class HomeComponent implements OnInit, OnChanges {
 
   @Input() daysOfHistory: string;
-  @Input() title = 'Reservations';
+  @Input() title = 'Upcoming';
   reservations: Reservation[];
   isLoading: boolean;
   shouldHide: boolean;
