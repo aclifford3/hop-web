@@ -128,3 +128,7 @@ Development, build and quality processes are based on [angular-cli](https://gith
 - [Updating dependencies and tools](docs/updating.md)
 - [Using a backend proxy for development](docs/backend-proxy.md)
 - [Browser routing](docs/routing.md)
+
+#### Architectural diagram
+![Diagram]
+(https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.pdf)
