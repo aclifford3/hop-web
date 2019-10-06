@@ -130,5 +130,4 @@ Development, build and quality processes are based on [angular-cli](https://gith
 - [Browser routing](docs/routing.md)
 
 #### Architectural diagram
-![Diagram]
-(https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.png)
+![Diagram](https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.png)
