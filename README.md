@@ -131,4 +131,4 @@ Development, build and quality processes are based on [angular-cli](https://gith
 
 #### Architectural diagram
 ![Diagram]
-(https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.pdf)
+(https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.png)
