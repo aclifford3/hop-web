@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit, OnChanges {
   groupPermissionMappings = {
     admin: ['All'],
     PalmBeach: ['Palm Beach'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul', 'Palm Beach 462'],
+    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul'],
+    ArubaAll: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul', 'Palm Beach 462'],
     US: ['Confederate']
   };
 
