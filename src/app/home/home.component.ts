@@ -25,13 +25,6 @@ export class HomeComponent implements OnInit, OnChanges {
   isLoading: boolean;
   shouldHide: boolean;
   propertyNames: String[];
-  groupPermissionMappings = {
-    admin: ['All'],
-    PalmBeach: ['Palm Beach'],
-    ArubaClifford: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul'],
-    ArubaAll: ['Aruban Jewel', 'Blue Breeze', 'Casa Tranquila', 'Palm Beach', 'Sol to Soul', 'Palm Beach 462'],
-    US: ['Confederate']
-  };
 
   // ngOnInit() {
   //   this.isLoading = true;
@@ -68,37 +61,19 @@ export class HomeComponent implements OnInit, OnChanges {
     }))
     .subscribe((response: GetReservationsResponse) => {
       console.log('Reservations raw: ', response);
-      // Apply permissions filter to only include reservations user is permitted to view
-      this.filterUnauthorizedReservations(response);
       // Update reservations in shared service
+      this.reservations = response.Items;
       this.hopApiService.reservations = this.reservations;
     }, err => {
       console.log('Could not retrieve reservations, loading from local storage', err);
       // Apply permissions filter to only include reservations user is permitted to view
-      this.filterUnauthorizedReservations(JSON.parse(localStorage.getItem(upcomingReservationsKey)));
+      this.reservations = JSON.parse(localStorage.getItem(upcomingReservationsKey)).Items;
       // Update reservations in shared service
       this.hopApiService.reservations = this.reservations;
     });
   }
   ngOnChanges() {
     this.ngOnInit();
-  }
-
-  /**
-   * Filter out reservations the user is not permitted to see
-   * @param {GetReservationsResponse} reservations
-   */
-  private filterUnauthorizedReservations(response: GetReservationsResponse) {
-    const permittedPropertyNames = this.getPermittedPropertyNames();
-    // Store all reservations initially
-    this.reservations = response.Items;
-    // If not admin, filter
-    if (!(permittedPropertyNames.indexOf('All') > -1)) {
-      this.reservations = response.Items.filter(function (reservation: Reservation) {
-        return permittedPropertyNames.indexOf(reservation.propertyName) > -1;
-      });
-    }
-    console.log('Reservations: ', this.reservations);
   }
   // Add a new reservation
   add() {
@@ -187,23 +162,5 @@ export class HomeComponent implements OnInit, OnChanges {
     //   });
     // }
     this.propertyNameFilter = val;
-  }
-
-  /**
-   * Get list of property names user can access
-   */
-  getPermittedPropertyNames(): string[] {
-    let permittedPropertyNames: string[] = [];
-    const groups = this.authService.getUserGroups();
-    console.log('Groups: ', groups);
-    const groupPermissionMappings = this.groupPermissionMappings;
-    console.log('Group permission mapping: ', this.groupPermissionMappings);
-    Object.keys(groupPermissionMappings).forEach(function(key: string) {
-      // If user has a group, give access to those properties
-      if (groups.indexOf(key) > -1) {
-        permittedPropertyNames = permittedPropertyNames.concat(groupPermissionMappings[key]);
-      }
-    });
-    return permittedPropertyNames;
   }
 }
