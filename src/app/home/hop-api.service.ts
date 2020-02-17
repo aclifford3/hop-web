@@ -11,6 +11,7 @@ export interface Reservation {
   propertyName: string;
   checkInDate: string;
   checkOutDate: string;
+  checkOutTime: string;
   reservationSource: string;
   meetTime: string;
   guestsNum: number;
