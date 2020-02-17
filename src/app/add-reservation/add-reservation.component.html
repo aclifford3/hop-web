@@ -39,6 +39,10 @@
     <ion-datetime displayFormat="MM/DD/YYYY" max="2021-12-31" min="2018-01-01" [(ngModel)]="reservation.checkOutDate" required></ion-datetime>
   </ion-item>
   <ion-item>
+    <ion-label color="primary">Check-out Time</ion-label>
+    <ion-datetime displayFormat="hh:mm A" placeholder="04:00 PM" [(ngModel)]="reservation.checkOutTime"></ion-datetime>
+  </ion-item>
+  <ion-item>
     <ion-label color="primary"># Guests</ion-label>
     <ion-input type="number" text-right [(ngModel)]="reservation.guestsNum" required></ion-input>
   </ion-item>
@@ -46,7 +50,7 @@
     <ion-label color="primary">Apartment</ion-label>
     <ion-checkbox item-end [(ngModel)]="reservation.apartment"></ion-checkbox>
   </ion-item>
-    <ion-item>
+  <ion-item>
     <ion-label color="primary">Meet Time</ion-label>
     <ion-datetime displayFormat="hh:mm A" placeholder="04:00 PM" [(ngModel)]="reservation.meetTime"></ion-datetime>
   </ion-item>
@@ -86,19 +90,14 @@
     <ion-label color="primary">Flight Arrival Time</ion-label>
     <ion-datetime displayFormat="hh:mm A" [(ngModel)]="reservation.flightArrivalTime"></ion-datetime>
   </ion-item>
-
   <ion-item-divider color="light">Additional Information</ion-item-divider>
       <ion-item>
-      <ion-label color="primary">Instructions Sent</ion-label>
-      <ion-checkbox item-end [(ngModel)]="reservation.instructionsSent"></ion-checkbox>
-    </ion-item>
-    <ion-item>
-      <ion-label color="primary">Damage Deposit Refunded</ion-label>
-      <ion-checkbox item-end [(ngModel)]="reservation.ddReturned"></ion-checkbox>
-    </ion-item>
+        <ion-label color="primary">Instructions Sent</ion-label>
+        <ion-checkbox item-end [(ngModel)]="reservation.instructionsSent"></ion-checkbox>
+      </ion-item>
       <ion-item>
-      <ion-label color="primary" stacked>Notes</ion-label>
-      <ion-textarea placeholder="Make notes here..." [(ngModel)]="reservation.notes"></ion-textarea>
+        <ion-label color="primary" stacked>Notes</ion-label>
+        <ion-textarea placeholder="Make notes here..." [(ngModel)]="reservation.notes"></ion-textarea>
     </ion-item>
   <button ion-button full (click)="addReservation()">Confirm</button>
 </ion-content>

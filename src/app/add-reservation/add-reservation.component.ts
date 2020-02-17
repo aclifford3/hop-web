@@ -33,7 +33,7 @@ export class AddReservationComponent implements OnInit {
     'carrier': null,
     'checkInDate': null,
     'checkOutDate': null,
-    'ddReturned': null,
+    'checkOutTime': null,
     'email': null,
     'firstName': null,
     'flightArrivalTime': null,

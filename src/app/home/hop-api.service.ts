@@ -11,13 +11,13 @@ export interface Reservation {
   propertyName: string;
   checkInDate: string;
   checkOutDate: string;
+  checkOutTime: string;
   reservationSource: string;
   meetTime: string;
   guestsNum: number;
   apartment: boolean;
   lastName: string;
   carrier: string;
-  ddReturned: boolean;
   email: string;
   firstName: string;
   flightArrivalTime: string;
@@ -90,15 +90,5 @@ export class HopApiService {
   setHeaders() {
     headers = headers.set('Authorization', this.authService.credentials.idToken);
   }
-
-  //
-  // getRandomQuote(context: RandomQuoteContext): Observable<string> {
-  //   return this.http.get(routes.quote(context), { cache: true })
-  //     .pipe(
-  //       map((res: Response) => res.json()),
-  //       map(body => body.value),
-  //       catchError(() => of('Error, could not load joke :-('))
-  //     );
-  // }
 
 }
