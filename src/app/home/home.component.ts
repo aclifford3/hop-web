@@ -140,10 +140,10 @@ export class HomeComponent implements OnInit, OnChanges {
       'Aruban Jewel',
       'Blue Breeze',
       'Casa Tranquila',
-      'Confederate',
+      'United',
       'Turnberry',
       'Sol to Soul',
-      'Palm Beach 462'
+      'Carmela'
     ];
   }
 
