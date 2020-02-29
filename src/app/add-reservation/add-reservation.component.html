@@ -32,15 +32,15 @@
     </ion-item>
     <ion-item>
       <ion-label color="primary">Check-in</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY" max="2021-12-31" min="2018-01-01" [(ngModel)]="reservation.checkInDate" required></ion-datetime>
+      <ion-datetime displayFormat="MM/DD/YYYY" max="2050-12-31" min="2018-01-01" [(ngModel)]="reservation.checkInDate" required></ion-datetime>
     </ion-item>
   <ion-item>
     <ion-label color="primary">Check-out</ion-label>
-    <ion-datetime displayFormat="MM/DD/YYYY" max="2021-12-31" min="2018-01-01" [(ngModel)]="reservation.checkOutDate" required></ion-datetime>
+    <ion-datetime displayFormat="MM/DD/YYYY" max="2050-12-31" min="2018-01-01" [(ngModel)]="reservation.checkOutDate" required></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label color="primary">Check-out Time</ion-label>
-    <ion-datetime displayFormat="hh:mm A" placeholder="04:00 PM" [(ngModel)]="reservation.checkOutTime"></ion-datetime>
+    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="reservation.checkOutTime"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label color="primary"># Guests</ion-label>
@@ -52,10 +52,8 @@
   </ion-item>
   <ion-item>
     <ion-label color="primary">Meet Time</ion-label>
-    <ion-datetime displayFormat="hh:mm A" placeholder="04:00 PM" [(ngModel)]="reservation.meetTime"></ion-datetime>
+    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="reservation.meetTime"></ion-datetime>
   </ion-item>
-
-
   <ion-item-divider color="light">Guest Information</ion-item-divider>
   <ion-item>
     <ion-label color="primary">First Name</ion-label>

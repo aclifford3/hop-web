@@ -33,7 +33,8 @@ export class AddReservationComponent implements OnInit {
     'carrier': null,
     'checkInDate': null,
     'checkOutDate': null,
-    'checkOutTime': null,
+    // This should be done in the property table since we may want a different default for each property.
+    'checkOutTime': '11:00',
     'email': null,
     'firstName': null,
     'flightArrivalTime': null,
@@ -54,25 +55,16 @@ export class AddReservationComponent implements OnInit {
     loading.present();
     const checkInDate = this.route.snapshot.firstChild.firstChild.paramMap.get('checkInDate');
     const propertyName = this.route.snapshot.firstChild.firstChild.paramMap.get('propertyName');
-    console.log(this.route.snapshot.firstChild.firstChild);
-    console.log(propertyName);
-    console.log(checkInDate);
     if (this.hopApiService.reservations == null) {
       // Load the reservation being edited
       if (propertyName != null && checkInDate != null) {
         this.hopApiService.getReservation(propertyName, checkInDate).subscribe((response: GetReservationResponse) => {
           this.reservation = response.Item;
-          console.log(this.reservation);
         });
       }
     } else {
-      for (let i = 0; i < this.hopApiService.reservations.length; i++) {
-        const res = this.hopApiService.reservations[i];
-        if (res.checkInDate === checkInDate && res.propertyName === propertyName) {
-          this.reservation = res;
-          break;
-        }
-      }
+      const res = this.findReservationInList(checkInDate, propertyName);
+      this.reservation = res;
     }
     // Check if we are editing an existing reservation
     if (this.propertyName != null) {
@@ -80,8 +72,22 @@ export class AddReservationComponent implements OnInit {
     } else {
       loading.dismiss();
       this.title = 'Adding New Reservation';
-      console.log('Adding new reservation.');
     }
+  }
+
+  /**
+   * Get full reservation details by loading reservation from application store
+   * @param checkInDate of reservation
+   * @param propertyName of reservation
+   */
+  findReservationInList(checkInDate: string, propertyName: string) {
+    for (let i = 0; i < this.hopApiService.reservations.length; i++) {
+      const res = this.hopApiService.reservations[i];
+      if (res.checkInDate === checkInDate && res.propertyName === propertyName) {
+        return res;      
+      }
+    }
+    return this.reservation;
   }
 
   addReservation() {
