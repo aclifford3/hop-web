@@ -6,12 +6,13 @@ version 3.1.1
 
 # Getting started
 
-1. Go to project folder and install dependencies:
+1. Checkout the `develop` branch.  The `master` branch is used for production releases.
+2. Go to project folder and install dependencies:
  ```sh
  npm install
  ```
  
-2. Launch development server, and open `localhost:4200` in your browser:
+3. Launch development server, and open `localhost:4200` in your browser:
  ```sh
  npm start
  ```
@@ -131,3 +132,9 @@ Development, build and quality processes are based on [angular-cli](https://gith
 
 #### Architectural diagram
 ![Diagram](https://hop-static-files.s3.amazonaws.com/documentation/hop-diagram.png)
+
+#### Deployment
+This application is served as a static HTML, CSS, and Javascript website by Amazon S3, a cheap cloud storage solution.  This means that deployment involves packing static files and transferring to the S3 bucket.
+
+This application is deployed to an Amazon S3 bucket by circleci, a managed continuous deployment service.  Deployments are automatically triggered when an developer pushes a commit to the develop or master branch (prod deployment.)  When a change has been validated and is considered ready for production, the `develop` branch should be merged into `master`.  This ensures that the branches remain in sync and the future changes to `master` do not cause conflicts or miss changes.
+
