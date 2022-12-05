@@ -47,7 +47,8 @@ export class AddReservationComponent implements OnInit {
     'notes': null,
     'phoneNum': null,
     'propertyName': null,
-    'reservationSource': null
+    'reservationSource': null,
+    'isFriend': false
   };
 
   ngOnInit() {
