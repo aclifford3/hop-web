@@ -71,6 +71,10 @@
     <ion-label color="primary">Phone Number</ion-label>
     <ion-input type="tel" text-right [(ngModel)]="reservation.phoneNum" required></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label color="primary">Is Guest a Friend?</ion-label>
+    <ion-checkbox item-end [(ngModel)]="reservation.isFriend"></ion-checkbox>
+  </ion-item>
   <ion-item-divider color="light">Flight Information</ion-item-divider>
   <ion-item>
     <ion-label color="primary">Carrier</ion-label>

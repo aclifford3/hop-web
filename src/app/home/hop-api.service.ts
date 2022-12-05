@@ -26,6 +26,7 @@ export interface Reservation {
   instructionsSent: boolean;
   notes: string;
   phoneNum: string;
+  isFriend: boolean;
 }
 
 export interface GetReservationsResponse {

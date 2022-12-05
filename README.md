@@ -136,5 +136,6 @@ Development, build and quality processes are based on [angular-cli](https://gith
 #### Deployment
 This application is served as a static HTML, CSS, and Javascript website by Amazon S3, a cheap cloud storage solution.  This means that deployment involves packing static files and transferring to the S3 bucket.
 
-This application is deployed to an Amazon S3 bucket by circleci, a managed continuous deployment service.  Deployments are automatically triggered when an developer pushes a commit to the develop or master branch (prod deployment.)  When a change has been validated and is considered ready for production, the `develop` branch should be merged into `master`.  This ensures that the branches remain in sync and the future changes to `master` do not cause conflicts or miss changes.
+This application is deployed to an Amazon S3 bucket by circleci, a managed continuous deployment service.  Deployments are automatically triggered when an developer pushes a commit to the develop or master branch (prod deployment.)
 
+When a change has been validated and is considered ready for production, the `develop` branch should be merged into `master`.   This ensures that the branches remain in sync and the future changes to `master` do not cause conflicts or miss changes.  It is recommended to increment the version in version.ts to make it clear which version of the application the user is hitting. 
