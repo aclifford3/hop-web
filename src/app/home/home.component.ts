@@ -137,13 +137,11 @@ export class HomeComponent implements OnInit, OnChanges {
   initializePropertyNames() {
     this.propertyNames = [
       'Palm Beach',
-      'Aruban Jewel',
-      'Blue Breeze',
       'Casa Tranquila',
       'United',
-      'Turnberry',
-      'Sol to Soul',
-      'Carmela'
+      'Carmela',
+      'Mariposa',
+      'Ayoka Retreat'
     ];
   }
 
