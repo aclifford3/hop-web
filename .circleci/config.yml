@@ -22,9 +22,9 @@ jobs:
       - checkout
 
       #Install AWS CLI
-      - run:
-          name: "Install missing library on awscli"
-          command: sudo apt-get install -y libpython-dev
+      # - run:
+      #     name: "Install missing library on awscli"
+      #     command: sudo apt-get install -y libpython-dev
       - aws-cli/install
 
       # Download and cache dependencies
