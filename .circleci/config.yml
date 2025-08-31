@@ -9,7 +9,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: cimg/node:20.1-browsers
+      - image: circleci/node:10.9.0-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,9 +22,9 @@ jobs:
       - checkout
 
       #Install AWS CLI
-      - run:
-          name: "Install missing library on awscli"
-          command: sudo apt-get install -y libpython-dev
+      # - run:
+      #     name: "Install missing library on awscli"
+      #     command: sudo apt-get install -y libpython-dev
       - aws-cli/install
 
       # Download and cache dependencies
